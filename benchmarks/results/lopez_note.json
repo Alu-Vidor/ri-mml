@@ -1,0 +1,4 @@
+{
+  "source": "additional_inf/energies-15-00792-v2.pdf",
+  "message": "Current RI-MML solver supports only a pointwise IVP state u(0)=u0. It does not represent history-dependent initialized operators, so Lopez tests are analytic limitation checks."
+}

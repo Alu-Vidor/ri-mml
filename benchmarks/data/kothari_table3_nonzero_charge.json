@@ -1,0 +1,146 @@
+{
+  "source": "additional_inf/Kajal.pdf Table 3",
+  "provenance": "Manually transcribed from scanned PDF page after visual verification.",
+  "units": {
+    "C_lambda": "F/s^(1-lambda)",
+    "Rs_ohm": "ohm",
+    "C": "F"
+  },
+  "rows": [
+    {
+      "brand": "AVX",
+      "capacitance_F": 0.47,
+      "fractional": {
+        "C_lambda": 0.476,
+        "Rs_ohm": 0.0,
+        "lambda": 0.902,
+        "E_t": 6.18e-06
+      },
+      "integer": {
+        "C": 0.648,
+        "Rs_ohm": 1.484,
+        "E_t": 4.48e-05
+      }
+    },
+    {
+      "brand": "AVX",
+      "capacitance_F": 1.0,
+      "fractional": {
+        "C_lambda": 0.765,
+        "Rs_ohm": 0.0,
+        "lambda": 0.898,
+        "E_t": 1.34e-06
+      },
+      "integer": {
+        "C": 1.06,
+        "Rs_ohm": 1.056,
+        "E_t": 1.03e-05
+      }
+    },
+    {
+      "brand": "AVX",
+      "capacitance_F": 1.5,
+      "fractional": {
+        "C_lambda": 1.147,
+        "Rs_ohm": 0.0,
+        "lambda": 0.909,
+        "E_t": 3.37e-07
+      },
+      "integer": {
+        "C": 1.533,
+        "Rs_ohm": 0.643,
+        "E_t": 4.11e-06
+      }
+    },
+    {
+      "brand": "Kemet",
+      "capacitance_F": 0.47,
+      "fractional": {
+        "C_lambda": 0.079,
+        "Rs_ohm": 8.918,
+        "lambda": 0.594,
+        "E_t": 0.000133
+      },
+      "integer": {
+        "C": 0.325,
+        "Rs_ohm": 29.82,
+        "E_t": 0.0012
+      }
+    },
+    {
+      "brand": "Kemet",
+      "capacitance_F": 1.0,
+      "fractional": {
+        "C_lambda": 0.626,
+        "Rs_ohm": 2.742,
+        "lambda": 0.873,
+        "E_t": 1.01e-05
+      },
+      "integer": {
+        "C": 0.942,
+        "Rs_ohm": 4.273,
+        "E_t": 2.95e-05
+      }
+    },
+    {
+      "brand": "Kemet",
+      "capacitance_F": 1.5,
+      "fractional": {
+        "C_lambda": 0.914,
+        "Rs_ohm": 0.069,
+        "lambda": 0.922,
+        "E_t": 5.21e-07
+      },
+      "integer": {
+        "C": 1.172,
+        "Rs_ohm": 0.789,
+        "E_t": 5.16e-06
+      }
+    },
+    {
+      "brand": "Eaton",
+      "capacitance_F": 0.47,
+      "fractional": {
+        "C_lambda": 0.037,
+        "Rs_ohm": 0.0,
+        "lambda": 0.471,
+        "E_t": 5.39e-05
+      },
+      "integer": {
+        "C": 0.259,
+        "Rs_ohm": 43.15,
+        "E_t": 0.0044
+      }
+    },
+    {
+      "brand": "Eaton",
+      "capacitance_F": 1.0,
+      "fractional": {
+        "C_lambda": 0.081,
+        "Rs_ohm": 0.0,
+        "lambda": 0.422,
+        "E_t": 1.26e-05
+      },
+      "integer": {
+        "C": 0.701,
+        "Rs_ohm": 19.52,
+        "E_t": 0.00065
+      }
+    },
+    {
+      "brand": "Eaton",
+      "capacitance_F": 1.5,
+      "fractional": {
+        "C_lambda": 0.103,
+        "Rs_ohm": 0.0,
+        "lambda": 0.443,
+        "E_t": 1.27e-05
+      },
+      "integer": {
+        "C": 0.801,
+        "Rs_ohm": 15.49,
+        "E_t": 0.000731
+      }
+    }
+  ]
+}

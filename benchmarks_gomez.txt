@@ -1,0 +1,662 @@
+Ingeniería Investigación y Tecnología, volumen XV (número 2), abril-junio 2014: 311-319
+ISSN 1405-7743 FI-UNAM
+(artículo arbitrado)
+
+
+
+
+                                   Fractional RC and LC Electrical Circuits
+
+                                       Circuitos eléctricos RC y LC fraccionarios
+
+
+
+                   Gómez-Aguilar José Francisco                                                       Rosales-García Juan
+                 Departamento de Ingeniería Eléctrica                                             Departamento de Ingeniería Eléctrica
+         División de Ingenierías Campus Irapuato-Salamanca                                División de Ingenierías Campus Irapuato-Salamanca
+                      Universidad de Guanajuato                                                        Universidad de Guanajuato
+                       E-mail: jgomez@ugto.mx                                                           E-mail: rosales@ugto.mx
+
+
+                                                                                                    Guía-Calderón Manuel
+                  Razo-Hernández José Roberto                                                     Departamento de Ingeniería Eléctrica
+                     Departamento de Electromecánica                                      División de Ingenierías Campus Irapuato-Salamanca
+                 Instituto Tecnológico Superior de Irapuato                                            Universidad de Guanajuato
+                        E-mail: jorazo@itesi.edu.mx                                                      E-mail: guia@ugto.mx
+
+
+
+
+                       Information on the article: received: February 2013, reevaluated: April 2013, accepted: May 2013
+
+
+
+
+                                             Abstract
+
+In this paper we propose a fractional differential equation for the electrical
+RC and LC circuit in terms of the fractional time derivatives of the Caputo                                  Keywords:
+type. The order of the derivative being considered is 0 <  ≤ 1. To keep the
+dimensionality of the physical parameters R, L, C the new parameter σ is                                     • electrical circuits
+introduced. This parameter characterizes the existence of fractional structu-                                • fractional calculus
+res in the system. A relation between the fractional order time derivative                                  • mittag-leffler functions
+and the new parameter σ is found. The numeric Laplace transform method                                       • fractional structures
+was used for the simulation of the equations results. The results show that
+the fractional differential equations generalize the behavior of the charge,
+voltage and current depending of the values of . The classical cases are re-
+covered by taking the limit when  = 1. An analysis in the frequency domain
+of an RC circuit shows the application and use of fractional order differential
+equations.
+                                                      Fractional RC and LC Electrical Circuits
+
+
+
+
+                                       Resumen
+
+En este trabajo se propone una ecuación diferencial fraccionaria para los circui-
+tos RC y LC en términos de la derivada fraccionaria en el tiempo del tipo Caputo.                            Descriptores:
+El orden considerado de la derivada es 0 <  ≤ 1. Para mantener la dimension-
+alidad física de los parámetros R, L, C, se introduce un nuevo parámetro σ. Este                             • circuitos eléctricos
+parámetro caracteriza la existencia de estructuras fraccionarias en el sistema. Se                           • cálculo fraccionario
+encuentra la relación entre el orden de la derivada fraccionaria  y el nuevo                                • funciones de Mittag-Leffler
+parámetro σ. El método de la transformada numérica de Laplace fue usado para                                 • estructuras fraccionarias
+la simulación de las ecuaciones resultantes. Los resultados muestran que las ec-
+uaciones diferenciales fraccionarias generalizan el comportamiento de la carga,
+voltaje y corriente dependiendo de la elección de . Los casos clásicos se recu-
+peran en el límite cuando  = 1. Un análisis en el dominio de la frecuencia de un
+circuito RC muestra la aplicación y uso de ecuaciones diferenciales de orden
+fraccionario.
+
+
+
+Introduction                                                                  fractional order derivative are not unique and there
+                                                                              exist several definitions, including Grünwald-Letnikov,
+Although the mathematical foundation of Fractional                            Riemann-Liouville, Weyl, Riesz, and the Caputo repre-
+Calculus (FC) was established over 200 years ago, there                       sentation. In the Caputo case, the derivative of a cons-
+remains a subject quite new to mathematicians. FC, in-                        tant is zero and we can properly define the initial
+volving derivatives and integrals of non-integer order,                       conditions for the fractional differential equations so
+is the natural generalization of the classical calculus                       that they can be handled analogously to the classical
+(Oldham and Spanier, 1974; Miller and Ross, 1993; Sa-                         integer case. Caputo derivative implies a memory effect
+mko et al., 1993; Podlubny et al., 1999; Uchaikin, 2013).                     by means of a convolution between the integer order
+Many physical phenomena have “intrinsic” fractional                           derivative and a power of time (Podlubny, 1994; Gutié-
+order descriptions and so FC is necessary in order to                         rrez et al., 2010). For these reasons, in this paper we pre-
+explain them. In many applications FC provides more                           fer to use the Caputo fractional derivative defined by:
+accurate models of the physical systems than ordinary
+calculus do. Since its success describing anomalous                                                          t      ( n)
+                                                                                 γ                  1             f      (τ )
+diffusion (Wyss et al., 1986; Hilfer, 2000), (Metzler and                     D f (t ) =                     ∫                dτ , 		        (1)
+                                                                                                                       γ
+                                                                                                 Γ ( n − γ ) 0 (t − τ ) +1−n
+Klafter, 2000; Agrawal et al., 2004) non-integer order
+calculus both in one- and multi-dimensional spaces, it
+has become an important tool in many areas of physics,                        where n–1 < γ < n (n is N), and f (n)(τ) represents the de-
+mechanics, chemistry, engineering, ﬁnances electro-                           rivative of order n, real function evaluated in t. Wor-
+magnetism and bioengineering (Petras, 2010; Obeidat et                        king with this definition is important because of the
+al., 2011; Hilfer, 1974; West et al., 2003; Rosales et al.,                   ability to be implemented numerically (Podlubny,
+2012; Magin et al., 2006; Gómez et al., 2012c; Gómez et                       1994). The Caputo derivative has the following proper-
+al., 2012d; Caputo and Mainardi, 1971). Fundamental                           ty: if f (t) is a constant, then its derivative is zero. This
+physical considerations in favor of the use of models                         does not happen with other representations. Another
+based on derivatives of non-integer order are given in                        very important feature in the form of Caputo fractional
+Westerlund (1994), Veliev (2004) and Baleanu et al.                           derivative is that its Laplace transform is:
+(2010). The advantage of using fractional order systems
+compared with systems of integer order is that the for-                                                        n−1 ( k )
+mer has infinite memory, while others have finite me-                            { γ }
+                                                                              					
+                                                                              L D=
+                                                                                 f (t ) s F (s) − ∑ f
+                                                                                                        γ
+                                                                                                      (0)s
+                                                                                                               k =0
+                                                                                                                               γ −k −1
+                                                                                                                                             (2)
+mory. This is the main advantage of FC in comparison
+with the classical integer-order models, in which such
+effects are in fact neglected.                                                From equation (2), we can see that the representation of
+     To analyze the dynamical behavior of a fractional                        the Caputo derivative in Laplace domain using the ini-
+system it is necessary to use an appropriate definition                       tial conditions f (k)(0) where k is integer. If the initial con-
+of the fractional derivative. In fact, the definitions of the                 ditions are zero, this reduces to:
+
+
+
+   312        Ingeniería Investigación y Tecnología, volumen XV (número 2), abril-junio 2014: 311-319 ISSN 1405-7743 FI-UNAM
+                                       Gómez-Aguilar José Francisco, Razo-Hernández José Roberto, Rosales-García Juan, Guía-Calderón Manuel
+
+
+
+
+                                                                                             (2012b), an overview of a methodology based on the
+            {   γ
+                        }   γ
+           L D f (t ) = s F ( s ).
+          				                                                   (3)                         NLT and applied to the analysis of electromagnetic tran-
+          			                                                                                sient phenomena in power systems described by diffe-
+          This is consistent with the usual definition of the Lapla-                         rential equations of fractional order, a Newton-type
+          ce transform when γ is an integer. In general, a fractio-                          methodology to calculate either the transient or the pe-
+          nal order differential equation has the form                                       riodic steady state is used and the definition of Caputo
+                                                                                             fractional derivative is applied. To electrical networks
+            n       γ
+                                                                                             including nonlinear reactors and electronic devices.
+           ∑ ak D k f ( t ) = g ( t )
+          				                                                                  (4)
+          k			
+           =0                                                                                    In the present work we are interested in the study of
+                                                                                             a simple electrical circuit consisting of a resistor, an in-
+          where k > k–1 and ak are any real numbers, g(t) can be                           ductor and a capacitor, in the framework of the fractio-
+          seen as the source of a dynamic system. Inverse trans-                             nal derivative applying the method of the NLT for the
+          form 0 <  ≤ 1 requires the introduction of a special                              simulations.
+          function. The Mittag-Leffler function, where Γ is the
+          gamma function, which is defined as
+                                                                                             Description
+             ∞         m
+                     t                                                                       Using the Kirchhoff voltage law and the circuit of Figu-
+=Ea ,b (t )  ∑               , ( a, b > 0),
+ 						     m=0 Γ ( am + b )                                                    (5)          re 1, we have:
+
+          from (5) if a = 1, b = 1, we obtain the expression E1,1 (t) = et.
+          The Mittag-Lefﬂer function is a generalization of the ex-
+          ponential function.
+
+
+          Numerical Laplace transform
+          The Laplace transform is a useful tool for analyzing li-
+          near systems because it simplifies the problem of dea-
+          ling with differential equations in the time domain by
+          converting them into algebraic equations within the
+          frequency domain. The numerical Laplace transform
+                                                                                             Figure 1. Circuit with a fractal element and a capacitor
+          (NLT) is essentially a modified discrete Fourier trans-
+          form (DFT) through a windowing function (Gibbs phe-
+          nomenon) and a stability factor (aliasing), (Proakis and                           E(t) = Ve(t) + VC(t),			                                         (6)
+          Manolakis, 1996). Development of the NLT and its
+          application to the analysis of systems has been well do-                           where E(t) is the source voltage, Ve(t) is the voltage in
+          cumented over the past 40 years (Ramirez et al., 2004;                             the fractal element and VC(t) is the voltage in the capa-
+          Wilcox and Gibson, 1998). However, its use has tradi-                              citor. The voltage in the fractal element is
+          tionally been limited to the analysis of problems where
+          the result can be expressed in terms of simple functions
+                                                                                                         e d βγ q(t )
+          that allow the use of tables of Laplace transforms (Mo-                             e (t )  (1 γ)β
+                                                                                             V			                     ,                                       (7)
+          reno and Ramírez, 2008). When using discrete techni-                                        σe       dt βγ
+          ques in the frequency domain, computation time
+          becomes an important factor since it requires a certain                            where β {1, 2} is a parameter that determines whether the
+          amount of time to transform the data from the frequen-                             element e is a resistor or inductor, 0 <  ≤ 1, the product β
+          cy domain to the time domain or vice versa. However,                               determines the order of the fractional differential equa-
+          by using the fast Fourier transform (FFT) the time ne-                             tion e {R, L} defines the characteristics of e, σ is a parame-
+          cessary for computation is greatly reduced and as a re-                            ter that determines the fractional structures of e.
+          sult the techniques of analysis in the frequency domain
+          become an attractive option.                                                       Fractional electrical circuit RC
+              Sheng investigated the validity of applying numeri-
+          cal inverse Laplace transform algorithms in fractional                             Taking in (7) e = R, β =1, σe= σR , the fractional differen-
+          calculus (Sheng y Chen, 2011). In a paper of Gómez                                 tial equation for RC circuit is
+
+
+
+                                Ingeniería Investigación y Tecnología, volumen XV (número 2), abril-junio 2014: 311-319 ISSN 1405-7743 FI-UNAM          313
+                                                       Fractional RC and LC Electrical Circuits
+
+
+
+
+                                                                               characterizes the existence of fractional structures in
+ R d γ q (t ) q (t )                                              (8)          the system.
+             +
+             =       E (t ),     (0 < γ ≤ 1)
+σ1R− γ dt γ    C                                                                   It can be seen this way: if  = 1, then, from (12) we
+                                                                               have σR = τ = RC and hence δ = 0 in (13), which means
+Recently Gómez et al. (2012a) proposed a systematic                            that the system does not have fractional structures, it
+way to construct fractional differential equations for the                     is an ordinary RC circuit. However, in the range
+physical systems. Such a way consists in analyzing the                         0 <  < 1, or 0 < σ < τ, the quantity δ increases and tends
+dimensionality of the ordinary derivative operator and                         to unity, since in the system each is again a fractional
+trying to bring it to a fractional derivative operator con-                    structure.
+sistently.                                                                         Assuming zero initial conditions, q (0) = 0 and
+    The introduction of the parameter σR allows dimen-                         E (t) = sin ωt, the Laplace transform applied to (10) re-
+sional consistency when [σR] = sec                                             sults in
+
+                                                                                                  C
+ 1 dγ  1
+			
+             ,           0  γ  1,                           (9)          Q( s )                        E (s) 			
+                                                                                                                      .
+                                                                                                                         (14)
+         γ                                                                                        1
+  R dt  sec
+    1 γ
+                                                                                           τγ  sγ  
+                                                                                                   τ γ 
+                                                                                              
+with  = 1 the equation (9) becomes an ordinary diffe-
+rential equation the first order with respect to time t.                       The voltage in the capacitor is
+This is only true, as stated above, if σR has dimensions
+of seconds.
+    Using the expression (8), the fractional differential                                         1
+equation for a circuit of a capacitor and a resistor has
+                                                                               VC ( s)                       E (s)  .			
+                                                                                                   1                                  (15)
+the form                                                                                   τγ  sγ  
+                                                                                                   τ γ 
+                                                                                              
+d γ q (t ) q (t ) C
+          +      =  E (t ) ,                                     (10)          The current can be obtained applying inverse numeric
+  dt γ      τγ τγ
+                                                                               Laplace transform in (14) and differentiating with res-
+                                                                               pect to time.
+with
+
+                                                                               Fractional electrical circuit LC
+      RC
+τ γ  1 γ 			                                                   (11)          Taking in (7) e = L, β = 2, σe = σL is obtained the fractional
+     σR
+                                                                               differential equation for the LC circuit is obtained
+
+The constant τ also can be called fractional time cons-
+tant due to its dimensionality [sec]. When  = 1, equa-                           L     d 2γ q(t ) q(t )                               (16)
+                                                                                                   
+                                                                                                         E (t ).   (0  γ  1)
+tion (11) recovers the ordinary time constant, ie.,                             L2(1 γ) dt 2γ      C
+τ1 = τ = RC.
+    The  parameter, which represents the order of the                         Using the expression (16), the fractional differential
+fractional time derivative in (10), can be related to the                      equation for a circuit containing a capacitor and an in-
+parameter σR, which characterizes the presence of frac-                        ductor has the form
+tional structures (fluctuations) in the system. In this
+case the empiric relationship is given by the expression                       d 2γ q(t ) q(t ) C
+                                                                                              E (t )              		                  (17)
+                                                                                 dt 2γ      Lγ  Lγ
+     σR
+γ      ,			                                                     (12)
+     RC
+                                                                               where
+
+thus, the magnitude                                                                       LC
+                                                                                Lγ                  		
+                                                                                         L1 γ                                         (18)
+δ = 1 ‒ ,			                                                    (13)
+
+
+
+
+   314         Ingeniería Investigación y Tecnología, volumen XV (número 2), abril-junio 2014: 311-319 ISSN 1405-7743 FI-UNAM
+                                             Gómez-Aguilar José Francisco, Razo-Hernández José Roberto, Rosales-García Juan, Guía-Calderón Manuel
+
+
+
+
+    The constant τL also can be called fractional time                                            Results
+constant due to its dimensionality [sec]. When  = 1,
+from (18) recovers the ordinary time constant, this is,                                            All simulations used MATLAB 7.5. (R2007b), Figures 2,
+τL1 = τL = LC .                                                                                    3 and 4 show the simulation for RC circuit γ = 1, γ = 0.98,
+    The  parameter, as before, that represents the order                                          γ = 0.96, for the charge, voltage and current, respecti-
+of fractional time derivative in (17), can be related to the                                       vely, using R = 1 pu, C = 0.1 pu and ω = 2π60.
+parameter σL, which characterizes the presence of frac-
+tional structures (fluctuations) in the system. In this                                                                      -3
+                                                                                                                                                             Charge
+case the empiric relationship is given by the expression                                                    6
+                                                                                                                 x 10
+
+                                                                                                                                                                                             γ=1
+                                                                                                                                                                                             γ=0.98
+   σ 			                                                                                                    5
+γ L                                                                                                                                                                                         γ=0.96
+   LC ,                                                                              (19)                   4
+
+
+thus, the magnitude                                                                                         3
+
+
+
+
+                                                                                                  Charge
+                                                                                                            2
+δ = 1 ‒ ,                                                                           (20)
+                                                                                                            1
+characterize the existence of fractional structures in the
+system.                                                                                                     0
+
+   You can see it this way: if  = 1, then, from (19) we
+                                                                                                            -1
+have σL2 = LC and therefore δ = 0 in (20), which means
+that the system has no fractional structures, is an ordi-                                                   -2
+                                                                                                                 0                0.01     0.02     0.03       0.04      0.05     0.06     0.07      0.08
+nary LC circuit. However, in the range 0 < σ < LC ,                                                                                                           t/RC
+(undamped natural frequency), the magnitude δ in-
+creases and tends to the unit, as in the system are in-
+                                                                                                   Figure 2. Graph of the charge on the capacitor in the RC
+creasingly found fractional structures.                                                            fractional circuit for different values of 
+   Assuming the initial conditions q (0) = q0, q (0) = 0
+and power supply E (t) = sin ω(t), the Laplace transform                                                                                                       Voltage
+applied to (17) results,                                                                                    0.06
+                                                                                                                                                                                                  γ=1
+                                                                                                            0.05                                                                                  γ=0.98
+            CE ( s )  q0 τ L γ s                                                                                                                                                                 γ=0.96
+Qh ( s)                             .       			                                     (21)
+                           1 
+                                                                                                            0.04
+            τ L γ  s 2γ       
+                          τ
+                            Lγ                                                                            0.03
+                                                                                                  Voltage
+
+
+
+
+                                                                                                            0.02
+The voltage in the capacitor is
+                                                                                                            0.01
+
+             CE ( s)  q0 τ L γ s
+VC ( s)                                 .       			                                                                 0
+                            1 
+            Cτ L γ  s 2γ                         (22)
+                           τ L γ                                                                         -0.01
+                   
+                                                                                                            -0.02
+                                                                                                                         0          0.01     0.02     0.03       0.04      0.05     0.06     0.07         0.08
+The current can be obtained applying inverse numeric                                                                                                             t/RC
+Laplace transform in (21) and differentiating with res-                                            Figure 3. Graph of the voltage on the capacitor in the RC
+pect to time.                                                                                      fractional circuit for different values of 
+
+
+
+
+                               Ingeniería Investigación y Tecnología, volumen XV (número 2), abril-junio 2014: 311-319 ISSN 1405-7743 FI-UNAM                                                       315
+                                                                                Fractional RC and LC Electrical Circuits
+
+
+
+
+                                                 Current                                                an equivalent circuit. The frequency range used was from
+          1.5                                                               γ=1                         10 Hz to 100 kHz. Once the measurements were repre-
+                                                                            γ=0.98                      sented in a Nyquist diagram, we obtained representa-
+                                                                            γ=0.96
+            1                                                                                           tions of equivalent electrical circuits via the software
+                                                                                                        ZView®. The method of “instant adjustment” was used
+          0.5                                                                                           to fit the data to predefined circuit models. A voltage of
+                                                                                                        25 mV was applied across the RC circuit.
+Current
+
+
+
+
+            0
+
+
+
+          -0.5
+
+
+
+           -1
+
+
+
+          -1.5
+                 0       0.01     0.02    0.03    0.04     0.05   0.06   0.07      0.08
+                                                  t/RC
+
+Figure 4. Graph of the current in the RC fractional circuit for
+different values of 
+
+
+                                                 Current
+           0.07
+                                                                           γ=1
+           0.06                                                            γ=0.98
+                                                                           γ=0.96                       Figure 6. Solartron® 1260
+           0.05
+
+           0.04
+                                                                                                        To determine the equivalent equation, the impedance is
+           0.03
+                                                                                                        determined, which is given by the following formula in
+Current
+
+
+
+
+           0.02                                                                                         the complex frequency domain.
+           0.01
+
+                 0                                                                                                 V (s)
+                                                                                                        Z (s) =             			                               (23)
+          -0.01                                                                                                     I (s)
+          -0.02
+                     0    0.01     0.02   0.03    0.04     0.05   0.06   0.07      0.08
+                                                  t/RC                                                  Applying Kirchhoff laws to the circuit of Figure 1, we
+                                                                                                        have:
+Figure 5. Graph of the current in the LC fractional circuit for
+different values of 
+                                                                                                       v Rs i + Vc p 			
+                                                                                                       =                                                      (24)
+
+
+Figure 5 show the simulation for LC circuit  = 1,
+                                                                                                        i iR + ic 			
+                                                                                                        =                                                     (25)
+ = 0.98,  = 0.96, for the current, using L = 0.001 pu,
+C = 0.1 pu and  = 2π60.
+                                                                                                        Before applying the Laplace transform of (24) and (25)
+                                                                                                        must make the following considerations
+Spectroscopy applied to a RC circuit
+                                                                                                               Vc p
+The electrical impedance spectroscopy technique applies                                                 iR =          			                                     (26)
+a potential difference between the two electrodes by pas-                                                       Rp
+sing a low power alternating current through the sample
+and this is compared with the voltage and current detec-                                                            dVc p
+ted to the output. To obtain the electrical impedance spec-                                             ic = C p            			                               (27)
+tra a Solartron® 1260 was used (Figure 6). The fidelity of                                                            dt
+the frequency sweep for these tests was important since it
+shows the characteristic spectrum of the sample, which is                                               In applying the definition of fractional derivative (Pod-
+necessary for comparing with the electrical parameters of                                               lubny, 1994), we have:
+
+
+
+           316                   Ingeniería Investigación y Tecnología, volumen XV (número 2), abril-junio 2014: 311-319 ISSN 1405-7743 FI-UNAM
+                                                  Gómez-Aguilar José Francisco, Razo-Hernández José Roberto, Rosales-García Juan, Guía-Calderón Manuel
+
+
+
+
+                                                                                                                                       4
+                                                                                                                                   x 10        Nyquist Diagram
+                                                                                                                              -8
+        Vc p 			                                                                          (28)
+ iR =                                                                                                                         -7
+         Rp
+                                                                                                                              -6
+                γ
+              d Vc p                                                                                                          -5
+ ic = C p                  			                                                            (29)
+
+
+
+
+                                                                                                             Imaginary Axis
+                     γ
+                dt                                                                                                            -4
+
+                                                                                                                              -3
+ Substituting (28) and (29) into (25), we obtain:
+                                                                                                                              -2
+
+v Rs i + Vc p 			
+=                                                                                         (30)
+                                                                                                                              -1
+                                                                                                                                                              Spectroscopy
+                                                                                                                              0                               Fractional Equation
+     Vc p                d γVc p          			                                             (31)
+                                                                                                                                                              Equation Integer Order
+i             Cp                                                                                                            1
+        Rp                dt γ                                                                                                     0       5                       10                        15
+                                                                                                                                                  Real Axis                                  4
+                                                                                                                                                                                        x 10
+
+ Applying Laplace transform to (30) and (31) is obtai-                                                  Figure 7. Nyquist diagram, comparison between integer order
+ ned:                                                                                                   equation (23), the spectroscopy and fractional equation (35),
+                                                                                                        fractional exponent  = 0.9825
+
+V ( s ) Rs I ( s ) + Vc p ( s ) 		
+=                                                                                         (32)
+
+
+             Vc p ( s)         Cp
+I ( s)
+                                      s γVc p ( s)              		                      (33)          From the Figure 7, it can be seen that the fractional di-
+               Rp              1 γ                                                                    fferential equation (35) obtained describes best the mea-
+                                                                                                        surement of electrical impedance spectroscopy.
+ Finally from (32) and (33) we have:
+                                                                                                        Discussion
+                               Rp
+ Z ( s γ
+        ) Rs                                         			                                               The Figures 2 and 4 show the charge and current in the
+                              RpC p
+                         1              s   γ           (34)                                           RC circuit, respectively. From Figure 3 can observe that
+                                1 γ                                                                   as  increases from 0.96 to 1, the fractal element behaves
+                                                                                                        as a resistor of resistance R for  = 1, intermediate values
+ If, s = (jω), we have:                                                                                 of  determines behavior between a capacitor and a re-
+                                                                                                        sistor. In the Figure 5 is observed a behavior inductive
+                                     Rp                                                                 for  = 1, intermediate values determine behavior bet-
+        γ
+ Z ( jω) Rs                                                 .    			                                  ween inductor and resistor.
+                                   RpC p
+                           1                    ( j )   γ
+                                                                      (35)                                  It has been found that for every 0 <  ≤ 1, the load
+                                    1 γ                                                               stored in the RC circuit is directly proportional to the
+                                                                                                        voltage on the capacitor; it follows that the behavior of
+ The equation (35) is the result of the fractional temporal                                             the charge on the capacitor will give identical curves to
+ operator in the equation for the RC equivalent circuit,                                                those shown in Figure 3.
+ this general formula includes an arbitrary constant sig-                                                   This current behavior can be induced from voltage
+ ma and in the case particular to take the value of                                                     in the capacitor, for  = 1 will have a current value equal
+ σ = RPCP is reduced to the Cole model (1941) and Gó-                                                   to the ratio between the supply voltage and resistance
+ mez et al. (2012). On the other hand, if we make γ = 1,                                                for t = 0, and will decrease with time until it reaches
+ we obtain the RC circuit ideal.                                                                        zero, a full-order RC circuit.
+     Figure 7 show the comparison of the Nyquist dia-                                                       As to the fractional LC circuit, is observed in Figure
+ gram resulting between integer order equation (23), the                                                5, the current increases as the  values decrease from 1
+ spectroscopy and fractional equation (35), fractional ex-                                              to 0.96 indicating losses in the LC series circuit, this can
+ ponent γ = 0.9825. This value was obtained by a least-                                                 be seen because there is a damping voltage curves, typi-
+ squares fit.                                                                                           cal of an RLC circuit with losses.
+
+
+
+                                   Ingeniería Investigación y Tecnología, volumen XV (número 2), abril-junio 2014: 311-319 ISSN 1405-7743 FI-UNAM                                      317
+                                                        Fractional RC and LC Electrical Circuits
+
+
+
+
+Conclusions                                                                     Caputo M., Mainardi F. Pure and Applied Geophysics, volume 91,
+                                                                                     1971: 134-147.
+The fractional differential equation for the RC and LC                          Cole K.S. and Cole R.H. Dispersion and Absorption in Dielectrics:
+circuits has been proposed. The relevant aspect of this                              Alternating Current Characteristics. J. Chem. Phys., volume 9,
+work is the way to introduce the fractional derivatives                              1941: 341-351.
+operators, providing a systematic way to construct the                          Gómez-Aguilar J.F., Rosales-García J.J., Bernal-Alvarado J.J.,
+fractional differential equations of any physical system                             Córdova-Fraga T., Guzmán-Cabrera R. Fractional Mechani-
+keeping the dimensionality of the physical parameters.                               cal Oscillators. Revista Mexicana de Física, volume 58, 2012a:
+The order of the derivative being considered is 0 <  ≤ 1.                           524-537.
+To keep the dimensionality of the physical parameters R,                        Gómez J.F., Rosales J.J., Bernal J.J., Guía M., Martinez J. Electro-
+L, C the new parameter σ is introduced. This parameter                               magnetic Transient Analysis of Networks Described by Equa-
+characterizes the existence of fractal structures in the sys-                        tions of Fractional Order. Prespacetime Journal, volume 3 (issue
+tem (components that show an intermediate behavior                                   6), 2012b: 524-537.
+between conservative and dissipative systems), the frac-                        Gómez-Aguilar F., Rosales-García J, Guía-Calderón M, Bernal-
+tional time components change the time constant and                                  Alvarado J. Analysis of Equivalent Circuits for Cells: A Frac-
+affect the transient response of the system (Guía et al.,                            tional Calculus Approach. Revista Ingeniería, Investigación y
+2013). A relation between the fractional order time deri-                            Tecnología, UNAM, volume XIII, 2012c: 375-384.
+vative  and the new parameter σ is found. The numeric                          Gómez F., Bernal J., Rosales J., Córdova T. Modeling and Simula-
+Laplace transform method was used for the simulation                                 tion of Equivalent Circuits in Description of Biological Sys-
+of the equations results. The classical cases are recovered                          tems- A Fractional Calculus Approach. Journal of Electrical
+by taking the limit when  = 1. Also, the concept of frac-                           Bioimpedance, volume 3 (issues 2-11), 2012d.
+tional time constant has been introduced.                                       Guía M., Gómez F., Rosales J. Analysis on the Time and Frequen-
+    From the description of the fractional differential                              cy Domain for the RC Electric Circuit of Fractional Order.
+equation models can be noted that the representation of                              Cent. Eur. J. Phys., Springer, 2013.
+the Cole model is generated to solve the RC circuit in                          Gutiérrez R.E., Rosário J.M., Tenreiro-Machado J.T. Fractional Or-
+the formalism of fractional calculus. The simulations                                der Calculus: Basic Concepts and Engineering Aplications, Hin-
+obtained from the fractional representation showing a                                dawi Publishing Corporation, Mathematical Problems in
+better description than those obtained by the equations                              Engineering, 2010.
+of integer order. The exponent of the fractional diffe-                         Hilfer R. Applications of Fractional Calculus in Physics, Singapore,
+rential equation that best fits the RC circuit is γ=0.9825.                          Ed. World Scientiﬁc, 2000.
+    With the approach presented here, it will be possi-                         Hilfer R. Phys. Chem. B, volume 104, 1974: 3914-3917.
+ble to have a better study of the transient effects in the                      Magin R.L. Fractional Calculus in Bioengineering, Begell House Pu-
+electrical systems. Also, the electrical circuit will provi-                         blisher, Rodding, 2006.
+de a robust framework for studying the bioelectrical                            Metzler R., Klafter J. Phys. Rep., volume 339, 2000: 1-77.
+response to transient stimuli, when an equivalent elec-                         Miller K.S., Ross B. An Introduction to the Fractional Calculus and
+trical circuit has been used.                                                        Fractional Differential Equations, Wiley, New York, 1993
+                                                                                Moreno P and Ramirez A. Implementation of the Numerical La-
+Acknowledgements                                                                     place Transform: a Review. IEEE Trans. Power Delivery, volu-
+                                                                                     me 23 (issue 4), 2008: 2599-2609.
+This research was supported by CONACYT.                                         Oldham K.B., Spanier J. The Fractional Calculus, Academic Press,
+                                                                                    New York, 1974.
+References                                                                      Obeidat A., Gharibeh M., Al-Ali M., Rousan A. Evolution of a Cu-
+                                                                                    rrent in a Resistor. Fract. Calc. App. Anal., Springer 2011, pp.
+Agrawal O.P., Tenreiro-Machado J.A., Sabatier I. Fractional Deriva-                 2-14.
+    tives and Their Applications, Eds., Nonlinear Dynamics, vol. 38,            Petras I. Fractional-Order Memristor-Based Chua’s Circuit. IEEE
+    Berlin, Springer-Verlag, 2004.                                                  Transactions on Circuits and Systems-II: Express Briefs, volume
+Baleanu D., Günvenc Z.B., Tenreiro-Machado J.A. New Trends in                       57, 2010: 12.
+    Nanotechnology and Fractional Calculus Applications, (Eds.),                Podlubny I. Fractional Differential Equations, San Diego, Academic
+    Springer 2010.                                                                  Press, 1994.
+
+
+
+
+   318          Ingeniería Investigación y Tecnología, volumen XV (número 2), abril-junio 2014: 311-319 ISSN 1405-7743 FI-UNAM
+                              Gómez-Aguilar José Francisco, Razo-Hernández José Roberto, Rosales-García Juan, Guía-Calderón Manuel
+
+
+
+
+Proakis J.G. and Manolakis D.G. Digital Signal Processing, in Prin-                 Wilcox D.J., Gibson I.S. Numerical Laplace Transformation and
+    ciples, Algorithms and Applications, 3rd ed., Upper Saddle Ri-                     Inversion in the Analysis of Physical Systems. Int. J. Numer.
+    ver, NJ, Prentice-Hall, 1996.                                                      Methods Eng., volume 20, 1984: 1507-1519.
+Ramirez A., Gómez P., Moreno P., Gutierrez A. Frequency Do-                         Wyss W.J. Math. Phys., volume 27, 1986: 2782-2785.
+    main Analysis of Electromagnetic Transients Through the
+    Numerical Laplace Transform, on: The IEEE General Meeting,
+    Denver, CO, 2004.
+Rosales J.J., Guía M., Gómez J.F., Tkach V.I. Fractional Electro-
+    magnetic Wave. Discontinuity, Nonlinearity and Complexity,
+    volume 14, 2012: 325-335.
+Samko S.G., Kilbas A.A., Maritchev O.I. Fractional Integrals and De-
+    rivatives, Theory and Applications, Gordon and Breach Science
+    Publishers, Langhorne, PA, 1993.
+Sheng H., Li Y., Chen Y.Q. Application of Numerical Inverse La-
+    place Transform Algorithms in Fractional Calculus. J. Franklin                   Citation for this article:
+    Inst., volume 348 (issue 2), 2011: 315-330.                                      Chicago citation style
+Uchaikin V. Fractional Derivatives for Physicists and Engineers,                     Gómez-Aguilar, José Francisco, José Roberto Razo-Hernández,
+    Springer 2013.                                                                   Juan Rosales-García, Manuel Guía-Calderón. Fractional RC and
+Veliev E.I., Engheta N. Fractional Curl Operator in Reﬂection Pro-                   LC Electrical Circuits. Ingeniería Investigación y Tecnología, XV, 02
+    blems, on: 10th Int. Conf. on Mathematical Methods in Elec-                      (2014): 311-319.
+    tromagnetic Theory, Ukraine, September 2004, pp. 14-17.
+                                                                                     ISO 690 citation style
+West B.J., Bologna M., Grigolini P. Physics of Fractional Operators,
+    Berlin, Springer-Verlag, 2003.                                                   Gómez-Aguilar J.F., Razo-Hernández J.R., Rosales-García J, Guía-
+                                                                                     Calderón M. Fractional RC and LC Electrical Circuits. Ingeniería
+Westerlund S. Causality, Report no. 940426, University of Kalmar,
+                                                                                     Investigación y Tecnología, volume XV (issue 2), April-June 2014:
+    1994.
+                                                                                     311-319.
+
+
+
+
+                              About the authors
+                              José Francisco Gómez-Aguilar. He obtained the degree of Doctor in Physics in the Division of Science
+                                  and Engineering Campus León, University of Guanajuato. He currently works in the Department
+                                  of Electrical Engineering, Division of Engineering, Campus Irapuato, Salamanca, University of
+                                  Guanajuato. His interests are electromagnetic effects in biological systems, numerical methods
+                                  applied to engineering, fractional calculus and its application to electrical circuit theory.
+                              Roberto Razo-Hernandez. He obtained a Master degree in Electrical Engineering from the School of
+                                 Mechanical Electrical and Electronics Engineering at the University of Guanajuato with speciali-
+                                 zation in Instrumentation and Digital Systems. He currently works in the Department of Electro-
+                                 mechanical Engineering in the ITESI Irapuato. His interests are fractional calculus and its
+                                 application to electrical circuit theory.
+                              Juan Rosales-García. He obtained the degree of Doctor of Science in UAM Iztapalapa. He currently
+                                  works in the Department of Electrical Engineering, Division of Engineering, Campus Irapuato,
+                                  Salamanca, University of Guanajuato. His interests are fractional calculus and circuit theory.
+                              Manuel Guía-Calderón. He obtained a Master degree in Electrical Engineering from the Faculty of
+                                 Mechanical Engineering Electrical and Electronics, University of Guanajuato with specialization
+                                 in Instrumentation and Digital Systems. He currently works in the Department of Electrical Engi-
+                                 neering, Division of Engineering, Campus Irapuato, Salamanca, University of Guanajuato. His
+                                 interests are numerical methods applied to engineering and fractional calculus.
+
+
+
+
+                       Ingeniería Investigación y Tecnología, volumen XV (número 2), abril-junio 2014: 311-319 ISSN 1405-7743 FI-UNAM               319
+

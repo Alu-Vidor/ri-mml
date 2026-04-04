@@ -1,0 +1,5 @@
+{
+  "source": "additional_inf/Kajal.pdf Eq. (13), (14), (28)",
+  "mapping": "Use hidden state x(t)=CPE voltage satisfying C_lambda*(R+Rs) D_t^lambda x + x = v_in, then reconstruct terminal voltage as v_out=(Rs*v_in + R*x)/(R+Rs) with external R=270 ohm.",
+  "status": "exact for one-term series RC-CPE under piecewise-constant step input, with output reconstruction."
+}

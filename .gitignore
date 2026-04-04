@@ -1,0 +1,44 @@
+# Python
+__pycache__/
+*.py[cod]
+*.pyd
+.Python
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+.coverage
+.coverage.*
+htmlcov/
+build/
+dist/
+*.egg-info/
+.venv/
+venv/
+env/
+ENV/
+
+# Jupyter
+.ipynb_checkpoints/
+
+# IDEs and OS files
+.idea/
+.vscode/
+.DS_Store
+Thumbs.db
+
+# Project temporary outputs
+tmp_crops/
+tmp_pages/
+
+# LaTeX build artifacts
+*.aux
+*.bbl
+*.bcf
+*.blg
+*.fdb_latexmk
+*.fls
+*.log
+*.out
+*.run.xml
+*.synctex.gz
+*.toc

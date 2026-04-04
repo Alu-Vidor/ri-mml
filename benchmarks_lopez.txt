@@ -1,0 +1,791 @@
+              energies
+Article
+Constant Phase Element in the Time Domain: The Problem
+of Initialization
+Juan Antonio López-Villanueva *                   and Salvador Rodríguez Bolívar
+
+
+                                          Department of Electronics and Computer Technology, CITIC, University of Granada, 18071 Granada, Spain;
+                                          rbolivar@ugr.es
+                                          * Correspondence: jalopez@ugr.es
+
+
+                                          Abstract: The constant phase element (CPE) is found in most battery and supercapacitor equivalent
+                                          circuit models proposed to interpret data in the frequency domain. When these models are used
+                                          in the time domain, the initial conditions in the fractional differential equations must be correctly
+                                          imposed. The initial state problem remains controversial and has been analyzed by various authors
+                                          in the last two decades. This article attempts to clarify this problem by proposing a procedure to
+                                          prepare the initial state and defining a decay function that reveals the effect of the initial state in
+                                          several illustrative examples. This decay function depends on the previous history, which is reflected
+                                          in the time needed to prepare the initial state and on the current profile assumed for this purpose.
+                                          This effect of the initial state is difficult to separate and can lead to the misinterpretation of the CPE
+                                          parameter values.
+
+                                          Keywords: constant phase element (CPE); fractional calculus; time domain; initial conditions; ZARC;
+                                          supercapacitor and battery modeling
+
+
+
+         
+         
+                                          1. Introduction
+Citation: López-Villanueva, J.A.;
+                                               Fractional equivalent circuit models are widely used to represent the behavior of
+Rodríguez Bolívar, S. Constant Phase
+                                          batteries and supercapacitors, both in the frequency and time domains [1–5], as they
+Element in the Time Domain: The
+                                          offer better accuracy with a lesser number of elements. These equivalent circuits include
+Problem of Initialization. Energies
+2022, 15, 792. https://doi.org/
+                                          constant phase elements (CPEs), which are unequivocally observed in the experimental
+10.3390/en15030792
+                                          results obtained with electrochemical impedance spectroscopy (EIS) [6]. The phase of the
+                                          impedance of a CPE is constant since it depends on the fractional exponent α, but does not
+Academic Editor: Christian Veje           depend on the frequency, as shown in (1) [1,7]:
+Received: 15 December 2021
+                                                                                              1         1 − jα π
+Accepted: 17 January 2022                                                ZCPE ( jω ) =               =      e  2                                   (1)
+Published: 21 January 2022
+                                                                                         Q · ( jω )α   Q ωα
+
+Publisher’s Note: MDPI stays neutral           In addition, the phase is negative, so that this element is sometimes referred to as a
+with regard to jurisdictional claims in   fractional capacitor. The impedance of the CPE in the Laplace domain is:
+published maps and institutional affil-
+iations.                                                                                           1
+                                                                                     ZCPE (s) =       .                                            (2)
+                                                                                                  Qsα
+
+                                                 There is interest in applying these models in the time domain [2,3,8–10] where the
+Copyright: © 2022 by the authors.         impedance (2) corresponds to a fractional derivative, as shown in (3), which is discussed in
+Licensee MDPI, Basel, Switzerland.        the next section.
+                                                                                             dα v(t)
+This article is an open access article                                             i (t) = Q                                              (3)
+distributed under the terms and
+                                                                                              dtα
+conditions of the Creative Commons               To solve differential equations that include fractional derivatives, the initial conditions
+Attribution (CC BY) license (https://     must be handled appropriately. However, the initial state problem remains controversial
+creativecommons.org/licenses/by/          and has been discussed by various authors in the last two decades. Lorenzo and Hartley
+4.0/).                                    first recognized that a time-varying initialization is actually required for the fractional-order
+
+
+
+Energies 2022, 15, 792. https://doi.org/10.3390/en15030792                                                 https://www.mdpi.com/journal/energies
+Energies 2022, 15, 792                                                                                             2 of 14
+
+
+
+
+                         derivative [11]. Some other authors also indicated that initial histories rather than initial
+                         values at a point should be considered [12–14]. The term “aberration” has been introduced
+                         in relation to this phenomenon [15] and has been used by other authors [16]. One procedure
+                         to deal with this problem is to define an initialized operator, related to the history, to be
+                         imposed in the fractional derivative at the initial point [17,18]. An alternative proposal
+                         is the diffusive representation introduced by Sabatier [19] and the continuous-frequency-
+                         distributed model proposed by Trigeassou and Maamri [20], which were merged in the
+                         construction of a partial differential equation, where the initial state is a vector of infinite
+                         dimensions [20–22]. The equivalence and compatibility of the above two initialization
+                         theories have been demonstrated [18,23].
+                               We focus the analysis of this work on a fractional element with impedance given
+                         by (2), with 0 < α < 1, which is the particular case of greatest interest in battery and
+                         supercapacitor models. One example of it corresponds to α = 0.5, which is often called
+                         Warburg impedance [24,25].
+                               In this paper, we bring this problem to the attention of the battery and supercapacitor
+                         modeling community. Our main goal is to provide a detailed study of how the previous
+                         history, i.e., how the initial voltage -v(0)- is reached, affects the subsequent behavior of
+                         the system. To do this, we hypothesized that the initial voltage of a CPE with 0 < α < 1
+                         may be written as v(0) g(t), where g(t) is a decay function between zero and one, with in-
+                         termediate values and behavior between that of the resistor and that of the non-fractional
+                         capacitor. This decay function, closely related to the general initial function defined by
+                         other authors [17,18,26], is derived and analyzed for the CPE, ZARC (composed of the CPE
+                         in parallel with a resistor), and RC networks. In the paper, we also highlight the error tow
+                         which some definitions of the fractional derivative can lead.
+                               A brief review of the basic definitions of fractional derivatives is provided in Section 2.
+                         Next, the decay function is calculated and discussed in Section 3 for a CPE, analyzing how
+                         the previous history of the CPE influences the time dependence of the function. The case
+                         of a ZARC element is discussed in Section 4, and the approximation of a CPE by a series
+                         RC network is considered in Section 5. Finally, a discussion of the results is presented in
+                         Section 6, and some conclusions and possible future work are provided in Section 7.
+
+                         2. Fractional Derivatives
+                             The most commonly used definitions of fractional derivatives start from the Riemann–
+                         Liouville fractional integral of order α, given by [27]:
+                                                                                       Z t
+                                                     α             −α           1                f (τ )
+                                                 0 I t f (t) = 0 D t f (t) =                                 dτ       (4)
+                                                                               Γ(α)     0    ( t − τ )1− α
+
+                         where Γ(α) is the Gamma function [27].
+                             Using Definition (4), the Riemann–Liouville fractional derivative is defined as [27]:
+                                                           RL α              m     α−m
+                                                           0 D t f (t) = 0 D t 0 D t   f ( t ),                       (5)
+
+                         with m − 1 ≤ α < m, m a positive integer, so that:
+
+                                                                         dm
+                                                                                 Z t
+                                                RL α               1                           f (τ )
+                                                0 D t f (t) =                                                dτ.      (6)
+                                                                Γ(m − α) dtm       0    ( t − τ )1− m + α
+
+                              Applying the Laplace transformation to (5), the following equation is obtained [27]:
+
+                                                                               m −1
+                                             L[0RL D αt f (t)] = sα L[ f (t)] − ∑ sk [0RL D αt −k−1 f (t)]t=0         (7)
+                                                                                k =0
+Energies 2022, 15, 792                                                                                                             3 of 14
+
+
+
+
+                              This expression depends on fractional derivatives at the initial time. This is a drawback
+                         of the Riemann–Liouville definition and motivates the use of an alternative definition
+                         known as the Caputo fractional derivative:
+                                                             C α               α−m     m
+                                                             0 D t f (t) = 0 D t   0 D t f ( t ),                                     (8)
+
+                         or:
+                                                                                            dm f (τ )
+                                                               Z t
+                                    C α                1                    1
+                                    0 D t f (t) =                                                     dτ ,        m − 1 ≤ α < m,      (9)
+                                                    Γ(m − α)    0    (t − τ )   1− m + α     dτ m
+                         whose Laplace transform is:
+
+                                                                                            m −1
+                                                    L[0C D αt f (t)] = sα L[ f (t)] − ∑ sα−k−1 f (k) (0)                            (10)
+                                                                                            k =0
+
+                              Equation (10) only uses integer derivatives at the initial time, so it is easier to apply in
+                         practice. However, the inability of the Caputo definition to provide a satisfactory solution
+                         to the initial condition problem has been pointed out [13,15], and we comment on it below.
+
+                         3. Initialization of the CPE
+                              The CPE, or fractional capacitor, with 0 < α < 1, can be considered as an interme-
+                         diate case between a resistor (α = 0) and an ideal non-fractional capacitor (α = 1). It is
+                         reasonable to think that it also behaves as an intermediate case in relation to the initial
+                         conditions. Allagui et al. [28] recently claimed that the weight of the voltage memory
+                         trace that results from the contribution of past voltage activity depends on the fractional
+                         exponent α, and therefore, the measured response of the device at any time is increasingly
+                         correlated with its past, while ideal capacitors do not exhibit such behavior and are memo-
+                         ryless devices. We interpret this same result in another way. If this two-terminal element
+                         supports an initial voltage drop, v(0), at time t = 0, and we apply a current i (t) for time
+                         t > 0, the behavior in the two extreme cases is quite different. In the case of a resistor with
+                         resistance R, the voltage at time t > 0 is:
+
+                                                                        v(t) = Ri (t),                                              (11)
+
+                         and the initial voltage is immediately forgotten. In the opposite case of a non-fractional
+                         capacitor of capacitance C, the voltage is given by:
+                                                                                        Z t
+                                                                                    1
+                                                              v ( t ) = v (0) +                 i (τ )dτ,                           (12)
+                                                                                    C       0
+
+                         and the initial voltage is always remembered, although its later effects do not depend on
+                         the previous history.
+                              Let us apply (10) to (3), in the particular case of 0 < α < 1, to obtain:
+
+                                                            I (s) = Q{sα V (s) − sα−1 v(0)},                                        (13)
+                         or:
+                                                                                I ( s ) v (0)
+                                                                    V (s) =            +      ,                                     (14)
+                                                                                Qsα        s
+                         which in the time domain, for t > 0, corresponds to:
+                                                                                     Z t
+                                                                             1                      i (τ )
+                                                       v ( t ) = v (0) +                                        dτ.                 (15)
+                                                                           QΓ(α)        0       ( t − τ )1− α
+
+                              Time-domain models for predicting the voltage–current characteristics of lithium-
+                         ion batteries under arbitrary charging and discharging current profiles have been re-
+                         ported, showing a higher accuracy than the traditional models with multiple parallel
+Energies 2022, 15, 792                                                                                              4 of 14
+
+
+
+
+                         RC units [29,30]. The initial voltage has been considered in an equation similar to (14).
+                         With this way of initialization, v(0) acts as an integration constant and is always remem-
+                         bered, as we would expect in the case of an ideal non-fractional capacitor, that it is not what
+                         we should obtain in the limit α → 0. Instead, we would expect to obtain:
+                                                                                        Z t
+                                                                                 1                i (τ )
+                                                   v ( t ) = v (0) g ( t ) +                                  dτ      (16)
+                                                                               QΓ(α)     0    ( t − τ )1− α
+
+                         so that the Caputo definition does not seem to produce the correct results. The meaning of
+                         g(t) is discussed in the next section.
+                              An alternative to the Riemann–Liouville and Caputo definitions of the fractional
+                         derivative is to use the discretized and truncated Grünwald–Letnikov derivative with
+                         a short and fixed memory length [5]. However, the voltage values during this memory
+                         interval, before the initial time, must also be known, so that the initialization problem is
+                         not solved by this approach.
+
+                         4. The Decay Function
+                              To obtain the value of g(t), which we call the decay function, we propose to prepare
+                         an initial state starting from a state with zero initial conditions. The idea of preparing
+                         an initial state is not actually new [19]. It was applied in [13] and [14] to compute the
+                         internal force of an axially loaded viscoelastic bar, where an initial state was defined over
+                         an interval, and the initial condition was called the initial history [13]. The initialization
+                         function is a time-varying function and can be viewed as a generalization of the constant
+                         of integration required for the order-one integral [31]. Zhao et al. [26] also applied this
+                         procedure to the case of the internal force of an axially loaded viscoelastic bar and showed
+                         that the influence caused by the pre-initial process varies in time and reflects the memory
+                         of the whole pre-initial process, which explains the origin of the long memory property of
+                         fractional-order systems [26].
+                              We distinguish the initialization interval, [0, t0 ], and the observation interval, (t0 , ∞),
+                         and assume that the initial state has been achieved at t0 with an initialization current i0
+                         while the current applied during the observation phase is i1 , according to the next equation.
+                                                                 (
+                                                                   i0 ( t )      0 ≤ t < t0
+                                                         i (t) =                                                       (17)
+                                                                   i1 ( t − t0 ) t ≥ t0
+
+                               We also assumed zero initial conditions prior to the initialization phase. With zero
+                         initial conditions, the two definitions of fractional derivative (6) and (9) lead to the same
+                         Laplace transform and the ambiguity is avoided.
+                               To obtain the initial voltage v0 , we can apply a suitable constant current i0 (t) = I0 .
+                         With this current, the voltage can be obtained by:
+                                                                      Z t
+                                                           I0                    dτ                I0 tα
+                                                   v(t) =                              1− α
+                                                                                            =              ,          (18)
+                                                          QΓ(α)         0   (t − τ )             QΓ(α + 1)
+
+                              If I0 is held for a time interval of length t0 ,
+
+                                                                              I0 t0α
+                                                               v ( t0 ) =             ≡ v0 .                          (19)
+                                                                            QΓ(α + 1)
+
+                              After t0 , an arbitrary current i (t) flows through the CPE. The voltage is then ob-
+                         tained as:                      Z t0                     Z t
+                                                     I0            dτ         1         i (τ )
+                                           v(t) =                         +                      dτ.          (20)
+                                                   QΓ(α) 0 (t − τ )1−α      QΓ(α) t0 (t − τ )1−α
+Energies 2022, 15, 792                                                                                                                                             5 of 14
+
+
+
+
+                                The first term in (20) is:
+                                                              Z t0
+                                                    I0                           dτ                          I0
+                                                                                      1− α
+                                                                                                      =             [ t α − ( t − t0 ) α ],                         (21)
+                                                   QΓ(α)           0      (t − τ )                        QΓ(α + 1)
+
+                         which can be rewritten, by using (19), as:
+                                                                  Z t0                                                   α                    α 
+                                                                                                                                      t − t0
+                                                                                                                                
+                                                    I0                           dτ                                 t
+                                                                                                      = v0                    −                       .             (22)
+                                                   QΓ(α)           0      ( t − τ )1− α                            t0                   t0
+
+                                By defining the observation time, t0 , after t0 ,
+
+                                                                                              t 0 ≡ t − t0 ,                                                        (23)
+
+                         the final result has the form expected in (16):
+                                                                                                                   Z t0
+                                                                                                        1                     i ( τ + t0 )
+                                                     v ( t 0 ) = v 0 g1 ( t 0 ; t 0 ) +                                                       dτ
+                                                                                                      QΓ(α)          0    ( t 0 − τ )1− α
+                                                                                                                   Z t0                                             (24)
+                                                                                          01                                    i1 ( τ )
+                                                                  = v 0 g1 ( t 0 ; t ) +                                                      dτ,
+                                                                                         QΓ(α)                       0    ( t 0 − τ )1− α
+
+                         with:
+                                                                                                         t0
+                                                                                                               α      0 α
+                                                                                 0                                      t
+                                                                       g1 ( t 0 ; t ) =               1+             −        .                                     (25)
+                                                                                                         t0             t0
+                               Function g1 verifies g1 (t0 ; 0) = 1 and limt0 →∞ g1 (t0 ; t0 ) = 0, so that the initial voltage,
+                         v0 , is eventually forgotten, which justified the name “decay function” we used for it.
+                         However, although this procedure gives a method to prepare an initial state, the function
+                         g1 depends on the time t0 , which highlights the importance of taking into account the
+                         previous history since the same initial voltage can be obtained with different combinations
+                         of I0 and t0 values, and different decay rates of the initial voltage are therefore obtained.
+                               The result also depends on the current profile used to prepare the initial state. To illus-
+                         trate this, we can use a ramp current instead of a constant current for the same purpose. Let
+                         us assume a current i0 (t) = a · t for 0 ≤ t < t0 . The voltage for this time interval is then:
+
+                                                                                                                                atα+1
+                                                                                          Z t
+                                                                            a                             τ · dτ
+                                                           v(t) =                                               1− α
+                                                                                                                     =                                              (26)
+                                                                          QΓ(α)               0   (t − τ )                    QΓ(α + 2)
+
+                         and:
+                                                                                                    at0α+1
+                                                                            v ( t0 ) =                      ≡ v0 .                                                  (27)
+                                                                                                  QΓ(α + 2)
+                                If an arbitrary current i (t) is applied after t0 ,
+                                                                          Z t0                                                 Z t
+                                                             a                            τdτ                      1                       i (τ )
+                                                v(t) =                                                1− α
+                                                                                                           +                                          dτ,           (28)
+                                                           QΓ(α)            0    (t − τ )                        QΓ(α)          t0 ( t − τ )1− α
+
+                         where:
+                                         Z t0
+                                   a               τdτ                      a
+                                                           1− α
+                                                                   =               [ t α +1 − ( t − t 0 ) α +1 − ( α + 1 ) t 0 ( t − t 0 ) α ] .                    (29)
+                                 QΓ(α)    0     (t − τ )                 QΓ(α + 2)
+
+                                Using (27),
+                                         Z t0
+                                                                             "            α +1                           α +1                            α #
+                                                                                                                t − t0                          t − t0
+                                                                                                                                                   
+                                   a                τdτ                               t
+                                                                   = v0                                −                             − ( α + 1)                     (30)
+                                 QΓ(α)    0     ( t − τ )1− α                        t0                           t0                              t0
+Energies 2022, 15, 792                                                                                                         6 of 14
+
+
+
+
+                                With t0 ≡ t − t0 , the final result is obtained as:
+                                                                                                Z t0
+                                                                                         1                 i (τ )
+                                                  v ( t 0 ) = v 0 g2 ( t 0 ; t 0 ) +                                     dτ,    (31)
+                                                                                       QΓ(α)     0     ( t 0 − τ )1− α
+
+                         where:                                                      α +1
+                                                                               t0                   t0
+                                                                                                      0 α
+                                                                                                         t
+                                                 g2 ( t 0 ; t 0 ) =       1+                 − 1+α+                             (32)
+                                                                               t0                   t0   t0
+                              Again, g2 (t0 ; 0) = 1 and limt0 →∞ g2 (t0 ; t0 ) = 0, so that g2 is another form of the decay
+                         function obtained for a different initialization current profile. The decay functions g1 and
+                         g2 are shown in Figure 1 for α = 0.5 and two different values of t0 . The decay rates are
+                         slow for long times and are different in the four cases, thus proving the influence of the
+                         previous history.
+
+
+
+
+                         Figure 1. Decay functions of the initial voltage obtained for a CPE with α = 0.5 by applying a constant
+                         current (lines) or a ramp current (symbols) for a time t0 .
+
+                         5. Initialization of ZARC
+                               The CPE included in battery and supercapacitor models is often connected with a
+                         resistor in parallel, as shown in Figure 2. For this connection, the name ZARC was proposed
+                         earlier [32] and has been widely used ever since [1,2,10]. Its impedance in the Laplace
+                         domain is:
+                                                                            R
+                                                                  Z=                                             (33)
+                                                                       1 + RQsα
+
+
+
+
+                         Figure 2. ZARC composed by a resistor and a CPE connected in parallel.
+
+                                Instead of parameter Q, we can use a time constant, which can be used as a time
+                                                                      1
+                         reference, by defining τ ≡ ( RQ) α , so that:
+
+                                                                                           R
+                                                                               Z=                                               (34)
+                                                                                       1 + (τs)α
+
+                         and:
+                                                                      [1 + (τs)α ]V (s) = I (s) R.                              (35)
+Energies 2022, 15, 792                                                                                             7 of 14
+
+
+
+
+                                We apply now the same initialization procedure used above with a constant current,
+                         I0 , to prepare the initial state. An arbitrary current i1 is subsequently applied for t ≥ t0 :
+                                                                    (
+                                                                      I0            0 ≤ t < t0
+                                                            i (t) =                                                  (36)
+                                                                      i1 ( t − t0 ) t ≥ t0
+
+                              Equation (36) can be rewritten as:
+
+                                                 i (t) = I0 [u(t) − u(t − t0 )] + i1 (t − t0 )u(t − t0 ),           (37)
+
+                         where u(t) is the unit step function. Its Laplace transform is [29]:
+
+                                                                             1 − e−st0
+                                                               I (s) = I0              + I1 (s)e−st0 .              (38)
+                                                                                 s
+                         so that:
+                                                                          1 − e−st0                  e−st0
+                                                   V (s) = I0 R                       + I1 ( s ) R           .      (39)
+                                                                        s[1 + (τs)α ]              1 + (τs)α
+                              For t ≥ t0 , or t0 ≥ 0, where t0 = t − t0 , we obtain:
+
+                                                                    v(t0 ) = vini (t0 ; t0 ) + v1 (t0 )             (40)
+
+                         where:                                                                         
+                                                                         0         −1         I1 (s) R
+                                                                    v1 ( t ) = L                                    (41)
+                                                                                            1 + (τs)α
+                         is the voltage that we would obtain in response to i1 with zero initial conditions, and:
+
+                                                                                         I0 R(1 − e−st0 )
+                                                                                                         
+                                                          vini (t0 ; t0 ) = L−1                             .       (42)
+                                                                                          s[1 + (τs)α ]
+
+                         is the response to the initial voltage in the observation phase. By using [27]:
+                                                                                           α 
+                                                                        1                     t
+                                                        L −1                       = 1 − Eα −                       (43)
+                                                                   s[1 + (τs)α ]              τ
+
+                         where Eα ( x ) is the one-parameter Mittag–Leffler function [27], defined according to:
+                                                                                    ∞
+                                                                                          xn
+                                                                     Eα ( x ) = ∑                                   (44)
+                                                                                  n =0
+                                                                                       Γ(nα + 1)
+
+                         the result, with t0 = t − t0 , is:
+                                                                  0     α          0 α 
+                                                                     t + t0                 t
+                                     vini (t0 ; t0 ) = I0 R 1 − Eα −             − 1 − Eα −                         (45)
+                                                                        τ                   τ
+
+                              The initial voltage can be written as:
+                                                                                    α 
+                                                                                      t0
+                                                   v0 ≡ vini (t0 ; 0) = I0 R 1 − Eα −        ,                      (46)
+                                                                                      τ
+
+                         so that the final result is:
+                                                                     vini (t0 ; t0 ) = v0 g3 (t0 ; t0 ),            (47)
+                         where a new decay function g3 is defined in this case according to:
+                                                                          0 α        0 α 
+                                                                      Eα − tτ      − Eα − t +τ t0
+                                                   g3 ( t 0 ; t 0 ) =                α        .                 (48)
+                                                                           1 − Eα − tτ0
+Energies 2022, 15, 792                                                                                                   8 of 14
+
+
+
+
+                             In the case of a non-fractional ZARC, which is obtained in the limit α = 1, in which
+                         the CPE is substituted by a non-fractional capacitor, and taking into account that the
+                         Mittag–Leffler function reduces to the exponential function in this limit:
+                                                                    0 α      0
+                                                                     t         − t
+                                                            lim Eα −         =e τ ,                                       (49)
+                                                            α →1     τ
+
+                         and the decay function is also an exponential function:
+                                                                                           0
+                                                                                      −    t
+                                                                            0
+                                                               lim g3 (t0 ; t ) = e        τ
+                                                                                                 .                        (50)
+                                                               α →1
+
+                              This is the well-known result in the case of the parallel RC network, in which the effect
+                         of the initial voltage decays exponentially.
+                              Therefore, both in the fractional ZARC and in the parallel RC network, the effect of
+                         the initial voltage decays and eventually vanishes, but while in the case of the parallel
+                         RC network, the exponential decay only depends on the initial voltage, in the case of the
+                         fractional ZARC, the decay rate is smoother and depends on the previous history. This
+                         behavior is compared in Figure 3, for the case of α = 0.5. The decay function g3 decays
+                         rapidly at first, but the decay rate is quite slower than the exponential for long times.
+
+
+
+
+                         Figure 3. Decay function of the initial voltage obtained for a ZARC with α = 0.5 by applying a
+                         constant current (lines), for different values of t0 , compared to the exponential decay function of a
+                         parallel RC element (dots).
+
+                         6. Approximation of the CPR by an RC Network
+                               To avoid the problems associated with the fractional derivatives, the fractional impedances
+                         are often approximated by functions with a finite number of poles and zeros. One possibility
+                         is that proposed by [33], and used by other authors [8], in which the fractional-order transfer
+                         function is approximated with a high-degree integer-order system. Another option is to
+                         approximate the CPE (or the ZARC) by a network composed by a series of RC branches [6,34],
+                         as shown in Figure 4. The approximation of the ZARC using finite and infinitely serially
+                         connected RC circuits was analyzed in detail in [35]. We consider the approximation of a CPE
+                         by a series RC network in this section.
+Energies 2022, 15, 792                                                                                             9 of 14
+
+
+
+
+                         Figure 4. Approximation of a CPE by the series connection of N RC elements.
+
+                               We could think that by using non-fractional RC elements, in which the effect of the
+                         initial voltage does not depend on the previous history, the problem of the initial conditions
+                         that we discussed above can be avoided. However, this is not true, since given an initial
+                         voltage v0 in the network, how this voltage is distributed among the initial voltages of the
+                         different elements actually depends on the previous history.
+                               The voltage of the RC network, with N parallel RC elements connected in series, can
+                         be obtained as follows [24],
+                                                                            N          Z t
+                                                                                   1                 t−ξ
+                                                       v ( t ) = v0 g ( t ) + ∑              i (ξ )e− τn dξ,        (51)
+                                                                                  C
+                                                                              n =1 n    0
+
+                         with:
+                                                                                            − t
+                                                                       ∑ N 1 vn,0 e τn
+                                                                 g(t) = n=N            ,                            (52)
+                                                                         ∑n=1 vn,0
+                         where vn,0 is the initial voltage in the n-th element, and:
+
+                                                                                N
+                                                                       v0 = ∑ vn,0                                  (53)
+                                                                              n =1
+
+                             We prepare the initial state again by starting from the zero initial condition and
+                         applying a constant current, I0 , for a time t0 . The initial voltage in the n-th element in the
+                         observation phase, at the end of this period, is obtained as:
+                                                                                  t0
+                                                                                      
+                                                            vn,0 = I0 Rn 1 − e− τn                                   (54)
+
+                         and the decay function is also obtained in this case:
+                                                                                            t
+                                                                                                 
+                                                                                           − τ0n       t
+                                                                            N
+                                                                          ∑ n =1 n
+                                                                                R    1 − e         e− τn
+                                               g ( t ) = g4 ( t 0 ; t ) =                       t
+                                                                                                     ,             (55)
+                                                                                              − 0
+                                                                             ∑nN=1 Rn 1 − e τn
+
+                         where time t is measured after the initialization period. The new decay function also has
+                         the expected limits limt→∞ g4 (t0 ; t) = 0 and limt→0 g4 (t0 ; t) = 1.
+                              The behavior of the decay function g4 can be compared with the decay function g1 of
+                         the CPE that the RC network approximates. To do so, we considered a Warburg-type CPE,
+                         with α = 0.5, and approximated it by an RC network with five elements (N = 5). We used
+                         typical parameter values of a Warburg impedance for a Li-ion battery [8,34]: (1) The values
+                         of Rn and τn = Rn Cn were obtained by a least-square fit to the real and imaginary parts of
+                         the CPE impedance in the range f min = 1 MHz to f max ≃ 1 Hz. (2) The real part of the CPE
+Energies 2022, 15, 792                                                                                                  10 of 14
+
+
+
+
+                         impedance at 1 MHz is 20 mΩ. The values of the RC network components are provided in
+                         Table 1.
+
+                         Table 1. Values of the parameters for the RC elements.
+
+                                 n                1               2               3                4                5
+                             Rn (mΩ)           1.0407          1.9991           4.5240          10.5239         71.3679
+                              τn (s)           0.1352          1.8012          12.3951          70.7794         686.9286
+
+
+                               Figure 5 shows a comparison of the real and imaginary parts of the impedances of
+                         the CPE (solid line) and the RC network (symbols). Since we chose α = 0.5, the real
+                         and imaginary parts of the CPE match. A good fit was obtained within the frequency
+                         range used for the adjustment, but deviations were observed outside this range. The two
+                         decay functions g1 and g4 , given in (25) and (55), respectively, are compared in Figure 6 in
+                         logarithmic scales for two different values of t0 . A good agreement was observed for times
+                         less than tmax ≃ 2π 1f , but a deviation was produced for longer times, in which the initial
+                                               min
+                         voltage for the CPE decayed at a lower rate.
+
+
+
+
+                         Figure 5. Absolute values of the real part (resistance) and imaginary part (reactance) of a CPE with
+                         α = 0.5 of an approximation with a five-element RC network.
+
+
+
+
+                         Figure 6. Decay function of the initial voltage obtained by applying a constant current to a CPE with
+                         α = 0.5 and to an approximation with a five-element RC network.
+Energies 2022, 15, 792                                                                                           11 of 14
+
+
+
+
+                         7. Discussion
+                               Although the problem of the initialization of fractional differential equations has been
+                         studied in the last two decades, it has not received sufficient consideration in some practical
+                         applications. The case considered here is the use of constant-phase elements in battery and
+                         supercapacitor modeling. When equivalent circuits containing fractional elements are used
+                         to predict the evolution of voltage and current in the time domain, the correct treatment of
+                         the initial conditions poses considerable difficulties, since many times, the previous history
+                         is not well known and its influence has been clearly demonstrated. The response to an
+                         applied current has been shown to be superimposed on the initial voltage multiplied by a
+                         decay function that depends on the previous current profile and the time for which it has
+                         been applied. There are several possibilities. The simplest one is to be sure that we start
+                         from a state with zero initial conditions, but this requires long relaxation times and is not
+                         always applicable. Another option is to wait for a long period after which the effect of the
+                         initial conditions has decayed and has a negligible effect on the element voltage, but this
+                         is even more difficult with fractional elements since the decay rates can be quite slow.
+                         A third possibility is to try to adjust the decay function from the data actually measured
+                         by separating it from the response to the post-initial current. Du et al. mentioned the
+                         difficulties of obtaining the initialization function in practical situations [15], although an
+                         algorithm to accomplish this task has been recently proposed [36]. In fact, this is not an
+                         easy task, as we show in the example below.
+                               Let us prepare an initial voltage of 50 mV in a CPE of the Warburg type according
+                                                                    1
+                         to (1) with α = 0.5 and Q = 446 Ω−1 s 2 (such that its real part is 20 mΩ for a frequency
+                         of 1 MHz). We then apply a constant current I1 = 1 A. Measuring the time t after the
+                         initialization period and using (24) we find:
+
+                                                                                          I1 tα
+                                                       v ( t ) = v 0 g1 ( t 0 ; t ) +             ,                 (56)
+                                                                                        QΓ(α + 1)
+
+                         where function g1 is given in (25). The result, for three different values of t0 , namely
+                         100 s, 500 s, and 3600 s, respectively, is shown in Figure 7. The curve corresponding to
+                         t0 = 100 s initially decreases and then shows a turnaround behavior. This is a consequence
+                         of a high current in the initialization phase, since to obtain the initial value of 50 mV in
+                         t0 = 100 s, a high initialization current, I0 = 1.98 A, is needed. If the CPE is assumed to
+                         reflect, for example, a diffusion mechanism in a Li-ion battery [37], such a high current
+                         would have produced a highly nonuniform Li concentration in its particles [38], and the
+                         observed rebound is justified. However, in the other two cases, it is possible to misinterpret
+                         the data by assuming the wrong Equation (15) that corresponds to (56) with g1 = 1 and
+                         different values of Q and α. A good fit, shown with symbols in Figure 7, was obtained with
+                         α = 0.77 and Q = 4730 Ω−1 sα for the t0 = 500 s case and α = 0.53 and Q = 718 Ω−1 sα
+                         for the t0 = 3600 s case, different from those used in (56). In the slower initialization
+                         case (I0 = 0.33 A during 3600 s), the error in Q and α is lower, but still important. The
+                         good fit obtained in some cases, such as those considered here with t0 equal to 500 s and
+                         3600 s, justifies the good result obtained by the authors, who used a non-decaying initial
+                         voltage [29,30]. However, the CPE parameter values obtained to represent the experimental
+                         results would have been different if a suitable decay function had been included. In other
+                         cases, such as the one shown here for t0 = 100 s, it would have been much more difficult to
+                         obtain a good fit to the experimental results.
+Energies 2022, 15, 792                                                                                                             12 of 14
+
+
+
+
+                                                                                                    1
+                                  Figure 7. Voltage for a CPE with α = 0.5 and Q = 446 Ω−1 Hz− 2 , measured after initializing at 50 mV.
+                                  Approximation with g1 = 1 by fitting the values of α = 0.5 and Q with the voltage data.
+
+                                  8. Conclusions and Future Research
+                                        To conclude, careful attention should be paid to the initialization of fractional elements,
+                                  such as the CPE, in battery and supercapacitor models. The effect of the initial value decays
+                                  with time and eventually vanishes, and it can be written as an initial function obtained as
+                                  the product of the initial value and a decay function, but the initial function may be very
+                                  difficult to separate from the rest of the response and may be misinterpreted by different
+                                  values of the CPE parameters.
+                                        In many practical cases, the initial voltage can be measured or deduced if the open
+                                  circuit voltage of the battery cell is known, but the previous history is usually not known,
+                                  so it is not possible to obtain an accurate initialization function. However, in cases where
+                                  the experiment cannot be designed starting from zero initial conditions, the decay functions
+                                  proposed in this work can be used with an equivalent or effective t0 parameter. This
+                                  might not be totally accurate, but it would lead to better results than simply assuming an
+                                  initial voltage that does not decay. We believe that this subject warrants further research.
+                                  In those experimental works that seek to adjust the transient experimental results in the
+                                  time domain with models that include the CPE, in addition to the CPE parameters, a new
+                                  parameter defining the decay function can be included, and its effects on the accuracy or
+                                  theoretical validity of the obtained results can be analyzed.
+
+                                  Author Contributions: Conceptualization, review, software, writing and editing, J.A.L.-V. and S.R.B.
+                                  All authors have read and agreed to the published version of the manuscript.
+                                  Funding: This research was partially funded by the TIC105 research group of the University
+                                  of Granada.
+                                  Institutional Review Board Statement: Not applicable.
+                                  Informed Consent Statement: Not applicable.
+                                  Data Availability Statement: Not applicable.
+                                  Conflicts of Interest: The authors declare no conflict of interest.
+
+References
+1.    Andre, D.; Meiler, M.; Steiner, K.; Walz, H.; Soczka-Guth, T.; Sauer, D.U. A retrospective on lithium-ion batteries. J. Power Sources
+      2011, 196, 5349–5356. [CrossRef]
+2.    Wang, B.; Li, S.E.; Peng, H.; Liu, Z. Fractional-order modeling and parameter identification for lithium-ion batteries. J. Power
+      Sources 2015, 293, 151–161. [CrossRef]
+3.    Bertrand, N.; Sabatier, J.; Briat, O.; Vinassa, J.M. Embedded Fractional Nonlinear Supercapacitor Model and Its Parametric
+      Estimation Method. IEEE Trans. Ind. Electron. 2010, 57, 3991–4000. [CrossRef]
+Energies 2022, 15, 792                                                                                                                13 of 14
+
+
+
+
+4.    Allagui, A.; Freeborn, T.J.; Elwakil, A.S.; Maundy, B.J. Reevaluation of Performance of Electric Double-layer Capacitors from
+      Constant-current Charge/Discharge and Cyclic Voltammetry. Sci. Rep. 2016, 6, 38568. [CrossRef] [PubMed]
+5.    Hu, X.; Yuan, H.; Zou, C.; Li, Z.; Zhang, L. Co-Estimation of State of Charge and State of Health for Lithium-Ion Batteries Based
+      on Fractional-Order Calculus. IEEE Trans. Veh. Technol. 2018, 67, 10319–10329. [CrossRef]
+6.    Gagneur, L.; Driemeyer-Franco, A.; Forgez, C.; Friedrich, G. Modeling of the diffusion phenomenon in a lithium-ion cell using
+      frequency or time domain identification. Microelectron. Reliab. 2013, 53, 784–796. [CrossRef]
+7.    Fouda, M.E.; Allagui, A.; Elwakil, A.S.; Das, S.; Psychalinos, C.; Radwan, A.G. Nonlinear charge-voltage relationship in constant
+      phase element. AEU Int. J. Electron. Commun. 2020, 117, 153104. [CrossRef]
+8.    Alavi, S.M.M.; Birkl, C.R.; Howey, D.A. Time-domain fitting of battery electrochemical impedance models. J. Power Sources 2015,
+      288, 345–352. [CrossRef]
+9.    Allagui, A.; Freeborn, T.J.; Elwakil, A.S.; Fouda, M.E.; Maundy, B.J.; Radwan, A.G.; Said, Z.; Abdelkareem, M.A. Review of
+      fractional-order electrical characterization of supercapacitors. J. Power Sources 2018, 400, 457–467. [CrossRef]
+10.   Nasser-Eddine, A.; Huard, B.; Gabano, J.D.; Poinot, T. A two steps method for electrochemical impedance modeling using
+      fractional order system in time and frequency domains. Control Eng. Pract. 2019, 86, 96–104. [CrossRef]
+11.   Hartley, T.T.; Lorenzo, C. Dynamics and Control of Initialized Fractional-Order Systems. Nonlinear Dyn. 2002, 29, 201–233.
+      [CrossRef]
+12.   Fukunaga, M.; Shimizu, N. Role of prehistories in the initial value problems of fractional viscoelastic equations. Nonlinear Dyn.
+      2004, 38, 207–220. [CrossRef]
+13.   Du, M.L.; Wang, Z.H. Initialized fractional differential equations with Riemann–Liouville fractional-order derivative. Eur. Phys. J.
+      Spec. Top. 2011, 193, 49–60. [CrossRef]
+14.   Du, B.; Wei, Y.; Liang, S.; Wang, Y. Estimation of exact initial states of fractional order systems. Nonlinear Dyn. 2016, 86, 2061–2070.
+      [CrossRef]
+15.   Du, M.; Wang, Z. Correcting the initialization of models with fractional derivatives via history-dependent conditions. Acta Mech.
+      Sin. 2016, 32, 320–325. [CrossRef]
+16.   Zhao, Y.; Wei, Y.; Chen, Y.; Wang, Y. A new look at the fractional initial value problem: The aberration phenomenon. J. Comput.
+      Nonlinear Dyn. 2018, 13, 121004. [CrossRef]
+17.   Lorenzo, C.F.; Hartley, T. Initialization of fractional-order operators and fractional differential equations. J. Comput. Nonlinear
+      Dyn. 2008, 3, 021101. [CrossRef]
+18.   Hartley, T.T.; Lorenzo, C.F.; Trigeassou, J.C.; Maamri, N. Equivalence of history-function based and infinite-dimensional-state
+      initializations for fractional-order operators. J. Comput. Nonlinear Dyn. 2013, 8, 041014. [CrossRef]
+19.   Sabatier, J.; Merveillaut, M.; Malti, R.; Oustaloup, A. How to impose physically coherent initial conditions to a fractional system?
+      Commun. Nonlinear Sci. Numer. Simul. 2010, 15, 1318–1326. [CrossRef]
+20.   Trigeassou, J.C.; Maamri, N. Initial conditions and initialization of linear fractional differential equations. Signal Process. 2011,
+      91, 427–436. [CrossRef]
+21.   Trigeassou, J.C.; Maamri, N.; Sabatier, J.; Oustaloup, A. State variables and transients of fractional order differential systems.
+      Comput. Math. Appl. 2012, 64, 3117–3140. [CrossRef]
+22.   Trigeassou, J.; Maamri, N.; Oustaloup, A. Lyapunov stability of noncommensurate fractional order systems: An energy balance
+      approach. J. Comput. Nonlinear Dyn. 2016, 11, 041007. [CrossRef]
+23.   Yuan, J.; Zhang, Y.; Liu, J.; Shi, B. Equivalence of initialized fractional integrals and the diffusive model. J. Comput. Nonlinear Dyn.
+      2018, 13, 034501. [CrossRef]
+24.   Plett, G.L. Battery Management Systems, Volume I: Battery Modeling; Artech House: Noewood, MA, USA, 2015.
+25.   Agudelo, B.O.; Zamboni, W.; Monmasson, E. A Comparison of Time-Domain Implementation Methods for Fractional-Order
+      Battery Impedance Models. Energies 2021, 14, 4415. [CrossRef]
+26.   Zhao, Y.; Wei, Y.; Shuai, J.; Wang, Y. Fitting of the initialization function of fractional order systems. Nonlinear Dyn. 2018,
+      93, 1589–1598. [CrossRef]
+27.   Petras, I. Fractional-Order Nonlinear Systems. Modeling, Analysis and Simulation; Springer: Berlin/Heidelberg, Germany, 2011.
+28.   Allagui, A.; Zhang, D.; Khakpour, I.; Elwakil, A.S.; Wang, C. Quantification of memory in fractional-order capacitors. J. Phys. D
+      Appl. Phys. 2020, 53, 02LT03. [CrossRef]
+29.   Cheng, C.S.; Chung, H.S.H.; Lau, R.W.H. Time-domain modeling of constant phase element for simulation of lithium batteries
+      under arbitrary charging and discharging current profiles. In Proceedings of the 2017 IEEE Applied Power Electronics Conference
+      and Exposition (APEC), Tampa, FL, USA, 26–30 March 2017; pp. 985–992. [CrossRef]
+30.   Cheng, C.S.; Chung, H.S.H.; Lau, R.W.H.; Hong, K.Y.W. Time-Domain Modeling of Constant Phase Elements for Simulation of
+      Lithium Battery Behavior. IEEE Trans. Power Electron. 2019, 34, 7573–7587. [CrossRef]
+31.   Yuan, J.; Gao, S.; Xiu, G.; Shi, B. Equivalence of initialized Riemann–Liouville and Caputo derivatives. J. Appl. Anal. Comput.
+      2020, 10, 2008–2023. [CrossRef]
+32.   Macdonald, J.R. New aspects of some small-signal ac frequency response functions. Solid State Ion. 1985, 15, 159–161. [CrossRef]
+33.   Oustaloup, A.; Levron, F.; Mathieu, B.; Nanot, F. Frequency-band complex noninteger differentiator: Characterization and
+      synthesis. IEEE Trans. Circuits Syst. I Fundam. Theory Appl. 2000, 47, 25–30. [CrossRef]
+Energies 2022, 15, 792                                                                                                         14 of 14
+
+
+
+
+34.   Ren, H.; Zhao, Y.; Chen, S.; Yang, L.A. A comparative study of lumped equivalent circuit models of a lithium battery for state of
+      charge prediction. Int. J. Energy Res. 2019, 43, 7306–7315. [CrossRef]
+35.   Heil, T.; Hossen, A. Continuous approximation of the ZARC element with passive components. Meas. Sci. Technol. 2021,
+      32, 104011. [CrossRef]
+36.   Krishnan, G.; Das, S.; Agarwal, V. An Online Identification Algorithm to Determine the Parameters of the Fractional-Order Model
+      of a Supercapacitor. IEEE Trans. Ind. Appl. 2020, 56, 763–770. [CrossRef]
+37.   Nasser-Eddine, A.; Huard, B.; Gabano, J.D.; Poinot, T.; Martemianov, S.; Thomas, A. Fast time domain identification of
+      electrochemical systems at low frequencies using fractional modeling. J. Electroanal. Chem. 2020, 862, 113957. [CrossRef]
+38.   Lopez-Villanueva, J.A.; Rodriguez-Bolivar, S.; Parrilla, L.; Finana, C. Simple Single Particle Model for Interpreting Fast Charge
+      Results in Intercalation Batteries. In Proceedings of the XXXV Conference on Design of Circuits and Integrated Systems (DCIS),
+      Segovia, Spain, 18–20 November 2020; pp. 1–5. [CrossRef]
+

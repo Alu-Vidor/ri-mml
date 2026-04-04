@@ -1,0 +1,64 @@
+{
+  "exact": {
+    "rows": 126,
+    "alphas": [
+      0.45,
+      0.75,
+      0.95
+    ],
+    "epsilons": [
+      0.1,
+      0.001,
+      1e-05
+    ],
+    "basis_sizes": [
+      4,
+      6,
+      8,
+      10,
+      12,
+      16,
+      20
+    ]
+  },
+  "kothari": {
+    "scenarios": [
+      "K1",
+      "K2",
+      "K3",
+      "K4",
+      "K5",
+      "K6"
+    ],
+    "rows": 15
+  },
+  "lopez": {
+    "source": "additional_inf/energies-15-00792-v2.pdf",
+    "message": "Current RI-MML solver supports only a pointwise IVP state u(0)=u0. It does not represent history-dependent initialized operators, so Lopez tests are analytic limitation checks."
+  },
+  "gomez": {
+    "source": "additional_inf/ArticuloPublicado.PDF",
+    "mode": "qualitative sanity-check",
+    "parameters": {
+      "R": 1.0,
+      "C": 0.1,
+      "omega": 376.99111843077515,
+      "gammas": [
+        1.0,
+        0.98,
+        0.96
+      ]
+    }
+  },
+  "report": {
+    "markdown": "C:\\Users\\danii\\Desktop\\Diss\\ri-mml\\benchmarks\\report\\benchmark_report.md",
+    "html": "C:\\Users\\danii\\Desktop\\Diss\\ri-mml\\benchmarks\\report\\benchmark_report.html"
+  },
+  "key_metrics": {
+    "exact_best_linf": 2.710505431213761e-20,
+    "exact_best_l2": 2.7691630376690118e-21,
+    "kothari_best_rmse": 0.0963570907429696,
+    "kothari_worst_rmse": 0.6962985938405122,
+    "kothari_rows": 15
+  }
+}

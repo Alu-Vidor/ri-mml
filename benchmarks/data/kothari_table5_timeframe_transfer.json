@@ -1,0 +1,85 @@
+{
+  "source": "additional_inf/Kajal.pdf Table 5",
+  "provenance": "Manually transcribed from scanned PDF page after visual verification.",
+  "units": {
+    "C_lambda": "F/s^(1-lambda)",
+    "Rs_ohm": "ohm"
+  },
+  "rows": [
+    {
+      "time_s": 10,
+      "zero_initial": {
+        "C_lambda": 0.771,
+        "Rs_ohm": 158.93,
+        "lambda": 0.922,
+        "E_t": 2.92e-07
+      },
+      "nonzero_initial": {
+        "C_lambda": 1.275,
+        "Rs_ohm": 0.0,
+        "lambda": 0.93,
+        "E_t": 3.17e-07
+      }
+    },
+    {
+      "time_s": 20,
+      "zero_initial": {
+        "C_lambda": 0.737,
+        "Rs_ohm": 174.44,
+        "lambda": 0.918,
+        "E_t": 3.05e-07
+      },
+      "nonzero_initial": {
+        "C_lambda": 1.219,
+        "Rs_ohm": 0.0,
+        "lambda": 0.919,
+        "E_t": 3.06e-07
+      }
+    },
+    {
+      "time_s": 30,
+      "zero_initial": {
+        "C_lambda": 0.669,
+        "Rs_ohm": 189.71,
+        "lambda": 0.907,
+        "E_t": 3.35e-07
+      },
+      "nonzero_initial": {
+        "C_lambda": 1.147,
+        "Rs_ohm": 0.0,
+        "lambda": 0.909,
+        "E_t": 3.37e-07
+      }
+    },
+    {
+      "time_s": 40,
+      "zero_initial": {
+        "C_lambda": 0.603,
+        "Rs_ohm": 212.74,
+        "lambda": 0.894,
+        "E_t": 3.81e-07
+      },
+      "nonzero_initial": {
+        "C_lambda": 1.101,
+        "Rs_ohm": 0.0,
+        "lambda": 0.899,
+        "E_t": 4.1e-07
+      }
+    },
+    {
+      "time_s": 50,
+      "zero_initial": {
+        "C_lambda": 0.541,
+        "Rs_ohm": 242.01,
+        "lambda": 0.885,
+        "E_t": 5.4e-07
+      },
+      "nonzero_initial": {
+        "C_lambda": 1.138,
+        "Rs_ohm": 0.0,
+        "lambda": 0.911,
+        "E_t": 1.42e-06
+      }
+    }
+  ]
+}

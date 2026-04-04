@@ -1,0 +1,1418 @@
+% !TEX TS-program = pdflatex
+\documentclass[12pt,a4paper]{article}
+
+\usepackage[T2A]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage[russian]{babel}
+\usepackage{amsmath,amssymb,amsfonts,amsthm,mathtools}
+\usepackage{geometry}
+\usepackage{hyperref}
+\usepackage{enumitem}
+\usepackage{bm}
+
+\geometry{margin=2.5cm}
+\hypersetup{colorlinks=true, linkcolor=blue, citecolor=blue, urlcolor=blue}
+
+\newtheorem{theorem}{Теорема}[section]
+\newtheorem{lemma}[theorem]{Лемма}
+\newtheorem{proposition}[theorem]{Предложение}
+\newtheorem{corollary}[theorem]{Следствие}
+\theoremstyle{definition}
+\newtheorem{definition}[theorem]{Определение}
+\newtheorem{remark}[theorem]{Замечание}
+\newtheorem{assumption}[theorem]{Предположение}
+
+\newcommand{\eps}{\varepsilon}
+\newcommand{\R}{\mathbb{R}}
+\newcommand{\N}{\mathbb{N}}
+\newcommand{\Nc}{\mathbb{N}_0}
+\newcommand{\Dc}{D_C^\alpha}
+\newcommand{\Lc}{L_c}
+\newcommand{\Rc}{R_c}
+\newcommand{\Span}{\operatorname{span}}
+\newcommand{\inner}[2]{\left(#1,#2\right)}
+\newcommand{\norm}[1]{\left\lVert #1 \right\rVert}
+\newcommand{\ealpha}[1]{E_{\alpha}\!\left(#1\right)}
+\newcommand{\eab}[2]{E_{\alpha,\beta}\!\left(#1\right)} % placeholder if needed manually
+
+\title{Резольвентно-индуцированный Müntz--Mittag--Leffler\\
+спектральный Petrov--Galerkin метод\\
+для сингулярно возмущённого дробного уравнения}
+\author{}
+\date{}
+
+\begin{document}
+
+\maketitle
+
+\begin{abstract}
+Предлагается новый спектральный метод для задачи
+\[
+\eps \Dc u(x)+a(x)u(x)=f(x), \qquad x\in(0,T], \qquad u(0)=u_0,
+\]
+где $0<\alpha<1$, $\Dc$ --- дробная производная Капуто, а $\eps>0$ есть малый параметр.
+Ключевая идея состоит в том, чтобы:
+(i) выделить главный дробный начальный слой,
+(ii) перейти к скрытой плотности $h=(\eps \Dc + a_c I)(u-u_0\ell_\eps)$,
+(iii) аппроксимировать $h$ в специальном спектральном пространстве, порождённом полугруппой показателей
+\[
+\Lambda_\alpha=\{m+n\alpha:\; m,n\in\Nc\},
+\]
+и
+(iv) строить trial-базис в физическом пространстве как точный образ test-базиса под резольвентой модельного оператора.
+Это приводит к новой операторно-согласованной спектральной схеме, допускающей
+$\eps$-равномерное обоснование, квазиоптимальность и спектральную сходимость
+в естественных аналитических классах.
+\end{abstract}
+
+\section{Постановка задачи}
+
+Рассматривается задача
+\begin{equation}
+\label{eq:main-problem}
+\eps \Dc u(x)+a(x)u(x)=f(x), \qquad x\in(0,T], \qquad u(0)=u_0,
+\end{equation}
+где
+\[
+0<\alpha<1,\qquad \eps>0,\qquad T>0.
+\]
+Под дробной производной Капуто понимается оператор
+\begin{equation}
+\label{eq:caputo}
+\Dc u(x):=
+\frac{1}{\Gamma(1-\alpha)}\int_0^x \frac{u'(s)}{(x-s)^\alpha}\,ds,
+\qquad x\in(0,T].
+\end{equation}
+
+\begin{assumption}
+\label{ass:a-f}
+Предполагается, что
+\[
+a\in C[0,T], \qquad f\in L^2(0,T), \qquad 0<a_*\le a(x)\le a^* \quad \text{на } [0,T].
+\]
+\end{assumption}
+
+Будем использовать двухпараметрическую функцию Миттаг--Леффлера
+\[
+E_{\alpha,\beta}(z):=\sum_{n=0}^\infty \frac{z^n}{\Gamma(\alpha n+\beta)},
+\qquad \alpha>0,\ \beta>0,
+\]
+и обозначение $E_\alpha(z):=E_{\alpha,1}(z)$.
+
+Основная трудность задачи \eqref{eq:main-problem} состоит в одновременном наличии
+дробной не локальности и сингулярного возмущения по малому параметру $\eps$.
+Даже для гладких $a$ и $f$ решение обычно имеет выраженный начальный слой
+дробного типа, плохо согласованный со стандартными полиномиальными спектральными базисами.
+
+\section{Выделение главного дробного слоя}
+
+Положим
+\[
+a_0:=a(0).
+\]
+Определим функцию главного слоя
+\begin{equation}
+\label{eq:layer}
+\ell_\eps(x):=E_\alpha\!\left(-\frac{a_0}{\eps}x^\alpha\right).
+\end{equation}
+Из стандартного тождества для производной Капуто следует, что
+\begin{equation}
+\label{eq:layer-eq}
+\eps \Dc \ell_\eps(x)+a_0\ell_\eps(x)=0,
+\qquad \ell_\eps(0)=1.
+\end{equation}
+
+Ищем решение задачи \eqref{eq:main-problem} в виде
+\begin{equation}
+\label{eq:u-decomp}
+u(x)=u_0\ell_\eps(x)+v(x),
+\qquad v(0)=0.
+\end{equation}
+Подставляя \eqref{eq:u-decomp} в \eqref{eq:main-problem} и используя \eqref{eq:layer-eq}, получаем
+\begin{equation}
+\label{eq:v-eq}
+\eps \Dc v(x)+a(x)v(x)=g_\eps(x),
+\qquad v(0)=0,
+\end{equation}
+где
+\begin{equation}
+\label{eq:g-eps}
+g_\eps(x):=f(x)-u_0\bigl(a(x)-a_0\bigr)\ell_\eps(x).
+\end{equation}
+
+Таким образом, главный начальный слой вынесен явно, а остаток $v$ имеет существенно более
+регулярную структуру.
+
+\section{Резольвентная редукция к уравнению второго рода}
+
+Выберем опорный коэффициент
+\begin{equation}
+\label{eq:ac}
+a_c>0,
+\qquad \text{например } \quad a_c:=\frac{a_*+a^*}{2}.
+\end{equation}
+Введём модельный оператор
+\begin{equation}
+\label{eq:Lc}
+\Lc := \eps \Dc + a_c I.
+\end{equation}
+Определим \emph{скрытую плотность}
+\begin{equation}
+\label{eq:hidden-density}
+h:=\Lc v = \eps \Dc v + a_c v.
+\end{equation}
+
+\begin{lemma}[Резольвента модельного оператора]
+\label{lem:resolvent}
+Для любого $h\in L^2(0,T)$ задача
+\[
+\Lc v = h, \qquad v(0)=0,
+\]
+имеет единственное решение
+\begin{equation}
+\label{eq:resolvent}
+v(x)=(\Rc h)(x):=
+\frac{1}{\eps}\int_0^x (x-s)^{\alpha-1}
+E_{\alpha,\alpha}\!\left(-\frac{a_c}{\eps}(x-s)^\alpha\right)h(s)\,ds.
+\end{equation}
+\end{lemma}
+
+\begin{proof}[План доказательства]
+Применяется преобразование Лапласа по переменной $x$ к задаче с нулевым начальным условием.
+В образах получаем
+\[
+\bigl(\eps s^\alpha+a_c\bigr)\widehat{v}(s)=\widehat{h}(s),
+\qquad
+\widehat{v}(s)=\frac{\widehat{h}(s)}{\eps s^\alpha+a_c}.
+\]
+Затем используется известная формула обратного преобразования Лапласа
+\[
+\mathcal{L}^{-1}\left\{\frac{1}{\eps s^\alpha+a_c}\right\}(x)
+=
+\frac{1}{\eps}x^{\alpha-1}E_{\alpha,\alpha}\!\left(-\frac{a_c}{\eps}x^\alpha\right),
+\]
+откуда следует \eqref{eq:resolvent}. Единственность вытекает из линейности и положительности
+оператора $\eps \Dc + a_c I$ при $a_c>0$.
+\end{proof}
+
+Используя \eqref{eq:v-eq} и \eqref{eq:hidden-density}, получаем
+\[
+h+(a-a_c)v=g_\eps.
+\]
+Так как $v=\Rc h$, то скрытая плотность удовлетворяет интегральному уравнению второго рода
+\begin{equation}
+\label{eq:density-eq}
+h(x)+\bigl(a(x)-a_c\bigr)(\Rc h)(x)=g_\eps(x), \qquad x\in(0,T].
+\end{equation}
+
+\begin{proposition}[Эквивалентность]
+\label{prop:equivalence}
+Пусть выполнено Предположение~\ref{ass:a-f}. Тогда следующие утверждения эквивалентны:
+\begin{enumerate}[label=\textup{(\roman*)}]
+\item $u$ решает задачу \eqref{eq:main-problem};
+\item функция $h$, определённая по формулам \eqref{eq:u-decomp}, \eqref{eq:hidden-density},
+решает уравнение \eqref{eq:density-eq}, а
+\begin{equation}
+\label{eq:u-recover}
+u(x)=u_0\ell_\eps(x)+(\Rc h)(x).
+\end{equation}
+\end{enumerate}
+\end{proposition}
+
+\begin{proof}[План доказательства]
+Нужно выполнить прямую и обратную подстановку.
+В прямом направлении из \eqref{eq:main-problem} после вычитания главного слоя
+получается \eqref{eq:v-eq}; затем через определение $h$ и представление $v=\Rc h$
+получаем \eqref{eq:density-eq}.
+В обратном направлении из \eqref{eq:density-eq} строится $v=\Rc h$,
+после чего \eqref{eq:u-recover} удовлетворяет \eqref{eq:main-problem}
+в силу равенств \eqref{eq:layer-eq} и \eqref{eq:hidden-density}.
+\end{proof}
+
+\section{Полугруппа показателей и новый спектральный базис}
+
+\subsection{Мотивация выбора показателей}
+
+Формальное локальное разложение гладкого коэффициента $a(x)$ порождает целые степени $x^m$,
+а слой \eqref{eq:layer} имеет разложение
+\[
+\ell_\eps(x)=\sum_{n=0}^\infty
+\frac{(-a_0/\eps)^n}{\Gamma(\alpha n+1)}x^{n\alpha}.
+\]
+Следовательно, смешанные члены вида $(a(x)-a_0)\ell_\eps(x)$ и аналогичные поправки
+естественно порождают показатели
+\[
+m+n\alpha,\qquad m,n\in\Nc.
+\]
+Это мотивирует введение аддитивной полугруппы
+\begin{equation}
+\label{eq:Lambda}
+\Lambda_\alpha:=\{m+n\alpha:\; m,n\in\Nc\}.
+\end{equation}
+Обозначим через
+\[
+0=\lambda_0<\lambda_1<\lambda_2<\dots
+\]
+строго возрастающую нумерацию \emph{различных} элементов множества $\Lambda_\alpha$.
+
+\subsection{M\"untz-базис в пространстве плотности}
+
+Рассмотрим систему функций
+\[
+x^{\lambda_0},\ x^{\lambda_1},\ x^{\lambda_2},\dots
+\]
+и ортонормируем её в $L^2(0,T)$ методом Грама--Шмидта. Получим базис
+\[
+M_0^{(\alpha)}, M_1^{(\alpha)},\dots,
+\qquad
+M_j^{(\alpha)}(x)=\sum_{k=0}^j q_{jk}x^{\lambda_k},
+\]
+удовлетворяющий
+\[
+\inner{M_i^{(\alpha)}}{M_j^{(\alpha)}}=\delta_{ij},
+\qquad
+\inner{p}{q}:=\int_0^T p(x)q(x)\,dx.
+\]
+Матрица Грама известна в явном виде:
+\begin{equation}
+\label{eq:Gram}
+G_{ij}=\int_0^T x^{\lambda_i+\lambda_j}\,dx
+=
+\frac{T^{\lambda_i+\lambda_j+1}}{\lambda_i+\lambda_j+1}.
+\end{equation}
+
+Для каждого $N\in\N$ определим test-пространство
+\begin{equation}
+\label{eq:WN}
+W_N^\alpha:=\Span\{M_0^{(\alpha)},\dots,M_{N-1}^{(\alpha)}\}.
+\end{equation}
+
+\subsection{Операторно-индуцированный trial-базис}
+
+\begin{lemma}[Точное действие резольвенты на степенные функции]
+\label{lem:monomial-image}
+Для любого $\lambda>-1$ выполнено
+\begin{equation}
+\label{eq:monomial-image}
+\Rc[x^\lambda](x)
+=
+\frac{\Gamma(\lambda+1)}{\eps}
+x^{\lambda+\alpha}
+E_{\alpha,\lambda+\alpha+1}\!\left(-\frac{a_c}{\eps}x^\alpha\right).
+\end{equation}
+\end{lemma}
+
+\begin{proof}[План доказательства]
+В формуле \eqref{eq:resolvent} подставляется $h(s)=s^\lambda$.
+После разложения ядра в ряд
+\[
+E_{\alpha,\alpha}(z)=\sum_{n=0}^\infty \frac{z^n}{\Gamma(\alpha n+\alpha)}
+\]
+интеграл вычисляется почленно с помощью формулы Бета:
+\[
+\int_0^x (x-s)^{\mu-1}s^\lambda\,ds
+=
+x^{\mu+\lambda}B(\mu,\lambda+1)
+=
+x^{\mu+\lambda}\frac{\Gamma(\mu)\Gamma(\lambda+1)}{\Gamma(\mu+\lambda+1)}.
+\]
+Собирая ряд, получаем именно \eqref{eq:monomial-image}.
+\end{proof}
+
+Определим новые trial-функции
+\begin{equation}
+\label{eq:trial-basis}
+\Phi_j^{\eps,\alpha}(x):=(\Rc M_j^{(\alpha)})(x), \qquad j=0,1,\dots.
+\end{equation}
+Из леммы \ref{lem:monomial-image} следует явная формула
+\begin{equation}
+\label{eq:Phi-explicit}
+\Phi_j^{\eps,\alpha}(x)
+=
+\sum_{k=0}^j q_{jk}\,
+\frac{\Gamma(\lambda_k+1)}{\eps}
+x^{\lambda_k+\alpha}
+E_{\alpha,\lambda_k+\alpha+1}\!\left(-\frac{a_c}{\eps}x^\alpha\right).
+\end{equation}
+По построению
+\begin{equation}
+\label{eq:intertwining}
+\Lc \Phi_j^{\eps,\alpha}=M_j^{(\alpha)},\qquad j=0,1,\dots.
+\end{equation}
+Определим trial-пространство
+\begin{equation}
+\label{eq:VN}
+V_N^{\eps,\alpha}:=\Rc W_N^\alpha
+=
+\Span\{\Phi_0^{\eps,\alpha},\dots,\Phi_{N-1}^{\eps,\alpha}\}.
+\end{equation}
+
+\begin{remark}
+Соотношение \eqref{eq:intertwining} означает, что главный дробный оператор
+$\Lc=\eps\Dc+a_c I$ не аппроксимируется напрямую дифференцирующей матрицей,
+а \emph{точно согласован} с парой пространств
+\[
+V_N^{\eps,\alpha}\xrightarrow{\ \Lc\ }W_N^\alpha.
+\]
+Именно это отличает предлагаемую схему от стандартных полиномиальных collocation-
+или Galerkin-подходов.
+\end{remark}
+
+\section{Дискретная схема}
+
+\subsection{Форма на скрытой плотности}
+
+Найти $h_N\in W_N^\alpha$ такое, что
+\begin{equation}
+\label{eq:discrete-h}
+\inner{h_N + (a-a_c)\Rc h_N - g_\eps}{w_N}=0,
+\qquad \forall w_N\in W_N^\alpha.
+\end{equation}
+После нахождения $h_N$ положим
+\begin{equation}
+\label{eq:uN-from-hN}
+u_N(x):=u_0\ell_\eps(x)+(\Rc h_N)(x).
+\end{equation}
+
+\subsection{Эквивалентная Petrov--Galerkin форма}
+
+Так как $h_N=\Lc(u_N-u_0\ell_\eps)$, задача \eqref{eq:discrete-h} эквивалентна:
+найти
+\[
+u_N \in u_0\ell_\eps + V_N^{\eps,\alpha}
+\]
+такое, что
+\begin{equation}
+\label{eq:discrete-u}
+\inner{\eps \Dc u_N + a u_N - f}{w_N}=0,
+\qquad \forall w_N\in W_N^\alpha.
+\end{equation}
+
+\subsection{Матричная форма}
+
+Пусть
+\[
+h_N(x)=\sum_{j=0}^{N-1} c_j M_j^{(\alpha)}(x),
+\qquad
+u_N(x)=u_0\ell_\eps(x)+\sum_{j=0}^{N-1} c_j \Phi_j^{\eps,\alpha}(x).
+\]
+Тогда из \eqref{eq:discrete-h} получаем систему
+\begin{equation}
+\label{eq:matrix-system}
+A\bm{c}=\bm{b},
+\end{equation}
+где
+\begin{equation}
+\label{eq:Aij}
+A_{ij}
+=
+\delta_{ij}
++
+\inner{(a-a_c)\Phi_j^{\eps,\alpha}}{M_i^{(\alpha)}},
+\qquad
+b_i=\inner{g_\eps}{M_i^{(\alpha)}},
+\qquad
+0\le i,j\le N-1.
+\end{equation}
+Главная часть матрицы есть единичная матрица, а всё влияние неоднородности коэффициента
+$a(x)$ сосредоточено в ограниченном возмущении.
+
+\section{Основные теоремы}
+
+Обозначим через $P_N$ ортогональный проектор в $L^2(0,T)$ на пространство $W_N^\alpha$.
+Введём также оператор
+\[
+K:= (a-a_c)\Rc.
+\]
+
+\begin{theorem}[$\eps$-равномерная устойчивость непрерывной и дискретной задач]
+\label{thm:stability}
+Пусть выполнено Предположение~\ref{ass:a-f} и
+\begin{equation}
+\label{eq:rho}
+\rho:=\frac{\norm{a-a_c}_{L^\infty(0,T)}}{a_c}<1.
+\end{equation}
+Тогда:
+\begin{enumerate}[label=\textup{(\roman*)}]
+\item уравнение \eqref{eq:density-eq} имеет единственное решение $h\in L^2(0,T)$;
+\item для любого $N\in\N$ дискретная задача \eqref{eq:discrete-h} имеет единственное решение $h_N\in W_N^\alpha$;
+\item имеют место оценки
+\begin{equation}
+\label{eq:stability-h}
+\norm{h}_{L^2(0,T)}
+\le
+\frac{1}{1-\rho}\norm{g_\eps}_{L^2(0,T)},
+\qquad
+\norm{h_N}_{L^2(0,T)}
+\le
+\frac{1}{1-\rho}\norm{P_N g_\eps}_{L^2(0,T)}.
+\end{equation}
+\end{enumerate}
+\end{theorem}
+
+\begin{proof}[План доказательства]
+Из \eqref{eq:resolvent} ядро резольвенты равно
+\[
+G_c^\eps(x):=\frac{1}{\eps}x^{\alpha-1}
+E_{\alpha,\alpha}\!\left(-\frac{a_c}{\eps}x^\alpha\right), \qquad x>0.
+\]
+Используя тождество
+\[
+\int_0^x G_c^\eps(t)\,dt
+=
+\frac{1}{a_c}\left(1-E_\alpha\!\left(-\frac{a_c}{\eps}x^\alpha\right)\right)
+\le \frac{1}{a_c},
+\]
+получаем
+\[
+\norm{\Rc}_{L^1\to L^1}\le \frac{1}{a_c},
+\qquad
+\norm{\Rc}_{L^\infty\to L^\infty}\le \frac{1}{a_c}.
+\]
+По интерполяции Рисса--Торина отсюда следует
+\[
+\norm{\Rc}_{L^2\to L^2}\le \frac{1}{a_c}.
+\]
+Следовательно,
+\[
+\norm{K}_{L^2\to L^2}
+\le
+\norm{a-a_c}_{L^\infty}\norm{\Rc}_{L^2\to L^2}
+\le \rho<1.
+\]
+Тогда оператор $I+K$ обратим в $L^2(0,T)$ по ряду Неймана, что даёт существование,
+единственность и первую оценку в \eqref{eq:stability-h}. Для дискретной схемы используется тот же аргумент
+для оператора $I+P_NK$ на конечномерном пространстве $W_N^\alpha$.
+\end{proof}
+
+\begin{theorem}[Квазиоптимальность]
+\label{thm:quasioptimal}
+Пусть выполнены условия Теоремы~\ref{thm:stability}. Тогда для решения $h$ уравнения
+\eqref{eq:density-eq} и решения $h_N$ задачи \eqref{eq:discrete-h} верно
+\begin{equation}
+\label{eq:quasi-h}
+\norm{h-h_N}_{L^2(0,T)}
+\le
+\frac{1}{1-\rho}
+\inf_{q_N\in W_N^\alpha}\norm{h-q_N}_{L^2(0,T)}.
+\end{equation}
+Для ошибки в исходной неизвестной имеем
+\begin{equation}
+\label{eq:quasi-u}
+\norm{u-u_N}_{L^2(0,T)}
+\le
+\frac{1}{a_c(1-\rho)}
+\inf_{q_N\in W_N^\alpha}\norm{h-q_N}_{L^2(0,T)}.
+\end{equation}
+\end{theorem}
+
+\begin{proof}[План доказательства]
+Поскольку $h$ и $h_N$ удовлетворяют соответственно
+\[
+h+Kh=g_\eps,
+\qquad
+h_N+P_NKh_N=P_Ng_\eps,
+\]
+то для ошибки проекции $P_Nh-h_N$ получаем
+\[
+(I+P_NK)(P_Nh-h_N)=-P_NK(h-P_Nh).
+\]
+Из обратимости $I+P_NK$ и оценки $\norm{P_NK}\le \rho$ следует
+\[
+\norm{P_Nh-h_N}\le \frac{\rho}{1-\rho}\norm{h-P_Nh}.
+\]
+Далее
+\[
+\norm{h-h_N}\le \norm{h-P_Nh}+\norm{P_Nh-h_N}
+\le \frac{1}{1-\rho}\norm{h-P_Nh},
+\]
+что и даёт \eqref{eq:quasi-h}, так как $P_Nh$ есть наилучшее приближение в $W_N^\alpha$.
+Наконец,
+\[
+u-u_N=\Rc(h-h_N),
+\]
+и оценка \eqref{eq:quasi-u} следует из неравенства $\norm{\Rc}_{L^2\to L^2}\le 1/a_c$.
+\end{proof}
+
+\begin{definition}[M\"untz-аналитический класс]
+\label{def:analytic-class}
+Для $\sigma>0$ определим пространство
+\[
+\mathcal{A}_{\Lambda_\alpha,\sigma}
+:=
+\left\{
+z=\sum_{j=0}^\infty \widehat z_j M_j^{(\alpha)} \;:\;
+\sum_{j=0}^\infty e^{2\sigma \lambda_j}|\widehat z_j|^2<\infty
+\right\},
+\]
+с нормой
+\[
+\norm{z}_{\mathcal{A}_{\Lambda_\alpha,\sigma}}^2
+:=
+\sum_{j=0}^\infty e^{2\sigma \lambda_j}|\widehat z_j|^2.
+\]
+\end{definition}
+
+\begin{theorem}[Спектральная сходимость в M\"untz-аналитическом классе]
+\label{thm:spectral}
+Пусть выполнены условия Теоремы~\ref{thm:stability} и скрытая плотность
+$h$ принадлежит классу $\mathcal{A}_{\Lambda_\alpha,\sigma}$ для некоторого $\sigma>0$.
+Тогда
+\begin{equation}
+\label{eq:spectral-h}
+\norm{h-h_N}_{L^2(0,T)}
+\le
+\frac{e^{-\sigma \lambda_N}}{1-\rho}
+\norm{h}_{\mathcal{A}_{\Lambda_\alpha,\sigma}},
+\end{equation}
+а для исходной неизвестной
+\begin{equation}
+\label{eq:spectral-u}
+\norm{u-u_N}_{L^2(0,T)}
+\le
+\frac{e^{-\sigma \lambda_N}}{a_c(1-\rho)}
+\norm{h}_{\mathcal{A}_{\Lambda_\alpha,\sigma}}.
+\end{equation}
+\end{theorem}
+
+\begin{proof}[План доказательства]
+Поскольку $\{M_j^{(\alpha)}\}_{j\ge0}$ --- ортонормированная система, для ортогонального проектора $P_N$
+имеем
+\[
+\norm{h-P_Nh}_{L^2(0,T)}^2
+=
+\sum_{j=N}^\infty |\widehat h_j|^2
+\le
+e^{-2\sigma \lambda_N}
+\sum_{j=N}^\infty e^{2\sigma \lambda_j}|\widehat h_j|^2
+\le
+e^{-2\sigma \lambda_N}
+\norm{h}_{\mathcal{A}_{\Lambda_\alpha,\sigma}}^2.
+\]
+Подстановка этой оценки в \eqref{eq:quasi-h} и \eqref{eq:quasi-u} завершает доказательство.
+\end{proof}
+
+\begin{theorem}[Асимптотически согласованный предел при $\eps\to0$]
+\label{thm:AP}
+Пусть выполнены условия Теоремы~\ref{thm:stability} и $N\in\N$ фиксировано.
+Пусть $u_N^\eps$ есть решение дискретной схемы \eqref{eq:discrete-u}. Тогда при $\eps\to0$
+\[
+u_N^\eps \to \overline u_N \quad \text{в } L^2(0,T),
+\]
+где $\overline u_N\in W_N^\alpha$ определяется как решение предельной спектральной задачи
+\begin{equation}
+\label{eq:limit-PG}
+\inner{a\,\overline u_N - f}{w_N}=0,
+\qquad \forall w_N\in W_N^\alpha.
+\end{equation}
+Следовательно, схема является асимптотически согласованной
+(\emph{asymptotic-preserving}) для вырожденного предела $\eps\to0$.
+\end{theorem}
+
+\begin{proof}[План доказательства]
+Сначала показывается, что
+\[
+\ell_\eps \to 0 \quad \text{в } L^2(0,T),
+\]
+поскольку дробный начальный слой концентрируется в сужающейся окрестности точки $x=0$.
+Затем из формулы \eqref{eq:resolvent} или из образов Лапласа следует сильная сходимость
+\[
+\Rc \to a_c^{-1}I \qquad \text{в } \mathcal{L}(L^2(0,T),L^2(0,T)).
+\]
+В частности,
+\[
+\Phi_j^{\eps,\alpha}=\Rc M_j^{(\alpha)} \to a_c^{-1}M_j^{(\alpha)}
+\qquad \text{в } L^2(0,T)
+\]
+для каждого фиксированного $j$.
+Кроме того, из \eqref{eq:g-eps} имеем
+\[
+g_\eps \to f \qquad \text{в } L^2(0,T).
+\]
+Поэтому матрица дискретной системы \eqref{eq:matrix-system} и правая часть сходятся:
+\[
+A^\eps_{ij}\to \delta_{ij}+\inner{(a-a_c)a_c^{-1}M_j^{(\alpha)}}{M_i^{(\alpha)}},
+\qquad
+b_i^\eps\to \inner{f}{M_i^{(\alpha)}}.
+\]
+Предельная система эквивалентна \eqref{eq:limit-PG}. Конечномерность пространства $W_N^\alpha$
+обеспечивает сходимость коэффициентов и, следовательно, сходимость $u_N^\eps$ в $L^2(0,T)$.
+\end{proof}
+
+\begin{proposition}[Точность на модельной задаче с постоянным коэффициентом]
+\label{prop:exact-constant}
+Если $a(x)\equiv a_c$ на $[0,T]$ и $g_\eps\in W_N^\alpha$, то дискретное решение совпадает
+с точным:
+\[
+h_N=h=g_\eps,
+\qquad
+u_N=u.
+\]
+\end{proposition}
+
+\begin{proof}[План доказательства]
+При $a\equiv a_c$ уравнение \eqref{eq:density-eq} упрощается до $h=g_\eps$.
+Если $g_\eps\in W_N^\alpha$, то из \eqref{eq:discrete-h} следует $h_N=P_Ng_\eps=g_\eps$.
+Далее $u_N=u_0\ell_\eps+\Rc h_N=u_0\ell_\eps+\Rc h=u$.
+\end{proof}
+
+\section{Итоговая формулировка метода}
+
+Предлагаемый метод можно кратко сформулировать так:
+
+\begin{enumerate}[label=\textbf{Шаг \arabic*.}]
+\item Выделить главный слой
+\[
+u=u_0\ell_\eps+v,
+\qquad
+\ell_\eps(x)=E_\alpha\!\left(-\frac{a_0}{\eps}x^\alpha\right).
+\]
+
+\item Ввести скрытую плотность
+\[
+h=(\eps \Dc + a_c I)v
+\]
+и свести задачу к уравнению второго рода
+\[
+h+(a-a_c)\Rc h=g_\eps.
+\]
+
+\item Построить M\"untz-test-пространство $W_N^\alpha$ по показателям
+\[
+\Lambda_\alpha=\Nc+\alpha\Nc
+\]
+и ортонормированным функциям $M_j^{(\alpha)}$.
+
+\item Построить operator-induced trial-пространство
+\[
+V_N^{\eps,\alpha}=\Rc W_N^\alpha
+=
+\Span\{\Phi_j^{\eps,\alpha}\}_{j=0}^{N-1},
+\]
+где
+\[
+\Phi_j^{\eps,\alpha}=\Rc M_j^{(\alpha)}
+\]
+заданы явно формулой \eqref{eq:Phi-explicit}.
+
+\item Решить Petrov--Galerkin систему
+\[
+\inner{\eps \Dc u_N + a u_N - f}{w_N}=0,
+\qquad \forall w_N\in W_N^\alpha.
+\]
+\end{enumerate}
+
+Концептуальная новизна конструкции состоит в том, что trial-базис
+не выбирается из заранее известных семейств полиномов или рациональных функций,
+а порождается \emph{самим модельным дробным оператором} через резольвенту.
+Это делает схему одновременно
+\begin{itemize}
+\item согласованной с дробной структурой,
+\item приспособленной к сингулярному начальному слою,
+\item удобной для $\eps$-равномерного анализа устойчивости,
+\item пригодной для спектральной сходимости в естественных M\"untz-аналитических классах.
+\end{itemize}
+
+\section{Модельные задачи для численной проверки метода}
+\label{sec:tests}
+
+В этом разделе предлагается набор задач, позволяющих проверить различные аспекты
+предлагаемого резольвентно-индуцированного Müntz--Mittag--Leffler метода:
+\begin{enumerate}[label=\textup{(\roman*)}]
+\item алгебраическую корректность построения trial/test-пространств;
+\item спектральную сходимость на решениях, согласованных с полугруппой показателей
+$\Lambda_\alpha=\Nc+\alpha\Nc$;
+\item устойчивость при $\eps\ll 1$;
+\item поведение на решениях, не принадлежащих естественному Müntz-классу;
+\item асимптотически согласованное поведение при $\eps\to0$.
+\end{enumerate}
+
+Во всех тестах удобно, если не оговорено иное, брать
+\[
+T=1,\qquad
+\alpha\in\{0.25,\,0.5,\,0.75\},\qquad
+\eps\in\{10^{-1},\,10^{-3},\,10^{-5},\,10^{-7}\},
+\]
+а размерность спектрального пространства варьировать, например, по сетке
+\[
+N=4,6,8,10,12,\dots.
+\]
+
+\subsection{Универсальная manufactured-конструкция}
+
+Для построения тестов с точным решением удобно использовать две общие схемы.
+
+\paragraph{(A) Manufactured-решения степенного типа.}
+Пусть
+\begin{equation}
+\label{eq:test-manufactured-power}
+u_{\mathrm{ex}}(x)
+=
+u_0\ell_\eps(x)+\sum_{r=1}^R c_r x^{\mu_r},
+\qquad
+\mu_r>0,
+\end{equation}
+где
+\[
+\ell_\eps(x)=E_\alpha\!\left(-\frac{a_0}{\eps}x^\alpha\right),
+\qquad
+a_0=a(0).
+\]
+Тогда, используя формулу
+\[
+\Dc x^\mu
+=
+\frac{\Gamma(\mu+1)}{\Gamma(\mu+1-\alpha)}x^{\mu-\alpha},
+\qquad \mu>0,
+\]
+получаем правую часть
+\begin{equation}
+\label{eq:test-manufactured-force}
+f(x)
+=
+u_0\bigl(a(x)-a_0\bigr)\ell_\eps(x)
++
+\sum_{r=1}^R c_r
+\left[
+\eps \frac{\Gamma(\mu_r+1)}{\Gamma(\mu_r+1-\alpha)}x^{\mu_r-\alpha}
++
+a(x)x^{\mu_r}
+\right].
+\end{equation}
+Тогда $u_{\mathrm{ex}}$ является точным решением исходной задачи.
+
+\paragraph{(B) Manufactured-решения в operator-induced trial-пространстве.}
+Пусть
+\begin{equation}
+\label{eq:test-manufactured-trial}
+u_{\mathrm{ex}}(x)
+=
+u_0\ell_\eps(x)+\sum_{j=0}^{M} d_j \Phi_j^{\eps,\alpha}(x),
+\end{equation}
+где $\Phi_j^{\eps,\alpha}=\Rc M_j^{(\alpha)}$.
+Тогда в силу тождества
+\[
+(\eps \Dc + a I)\Phi_j^{\eps,\alpha}
+=
+M_j^{(\alpha)} + (a-a_c)\Phi_j^{\eps,\alpha}
+\]
+получаем
+\begin{equation}
+\label{eq:test-force-trial}
+f(x)
+=
+u_0\bigl(a(x)-a_0\bigr)\ell_\eps(x)
++
+\sum_{j=0}^{M} d_j
+\left(
+M_j^{(\alpha)}(x)
++
+\bigl(a(x)-a_c\bigr)\Phi_j^{\eps,\alpha}(x)
+\right).
+\end{equation}
+Такой тест особенно важен, поскольку проверяет корректность именно нового
+operator-induced базиса.
+
+\subsection{Задача 1: точное воспроизведение operator-induced trial-пространства}
+
+Рассмотрим
+\[
+a(x)=2+x,
+\qquad
+a_0=2,
+\qquad
+a_c=\frac{2+3}{2}=\frac52.
+\]
+Зададим точное решение в виде
+\begin{equation}
+\label{eq:test1-uex}
+u_{\mathrm{ex}}(x)
+=
+u_0\ell_\eps(x)
++
+\Phi_0^{\eps,\alpha}(x)
+-2\Phi_2^{\eps,\alpha}(x)
++\frac12 \Phi_4^{\eps,\alpha}(x),
+\end{equation}
+а правую часть определим по формуле \eqref{eq:test-force-trial}, то есть
+\begin{equation}
+\label{eq:test1-f}
+\begin{aligned}
+f(x)
+&=
+u_0\bigl(a(x)-2\bigr)\ell_\eps(x)
++
+M_0^{(\alpha)}(x)-2M_2^{(\alpha)}(x)+\frac12 M_4^{(\alpha)}(x)
+\\
+&\quad
++
+\left(a(x)-\frac52\right)
+\left(
+\Phi_0^{\eps,\alpha}(x)
+-2\Phi_2^{\eps,\alpha}(x)
++\frac12 \Phi_4^{\eps,\alpha}(x)
+\right).
+\end{aligned}
+\end{equation}
+
+\medskip
+\noindent
+\textbf{Что проверяет эта задача.}
+Если используется точная или достаточно точная квадратурная сборка матрицы,
+то при $N\ge 5$ численное решение должно воспроизводить \eqref{eq:test1-uex}
+с точностью до машинного округления. Это является базовым тестом
+внутренней алгебраической согласованности метода.
+
+\subsection{Задача 2: \texorpdfstring{$\Lambda_\alpha$}{Lambda}-согласованное точное решение}
+
+Рассмотрим коэффициент
+\[
+a(x)=1+x+x^2,
+\qquad
+a_0=1.
+\]
+Положим
+\begin{equation}
+\label{eq:test2-uex}
+u_{\mathrm{ex}}(x)
+=
+\ell_\eps(x)
++
+x^\alpha
+-\frac12 x
++\frac14 x^{1+\alpha}
+-\frac13 x^{2\alpha}.
+\end{equation}
+Все показатели
+\[
+\alpha,\quad 1,\quad 1+\alpha,\quad 2\alpha
+\]
+принадлежат полугруппе $\Lambda_\alpha=\Nc+\alpha\Nc$.
+Следовательно, это естественная модельная задача для предлагаемого метода.
+
+Правая часть строится по формуле \eqref{eq:test-manufactured-force}
+с параметрами
+\[
+(\mu_1,c_1)=(\alpha,1),\quad
+(\mu_2,c_2)=(1,-1/2),\quad
+(\mu_3,c_3)=(1+\alpha,1/4),\quad
+(\mu_4,c_4)=(2\alpha,-1/3).
+\]
+Явно:
+\begin{equation}
+\label{eq:test2-f}
+\begin{aligned}
+f(x)
+&=
+(x+x^2)\ell_\eps(x)
++
+\eps\Gamma(\alpha+1)
+-\frac{\eps}{2}\frac{1}{\Gamma(2-\alpha)}x^{1-\alpha}
+\\
+&\quad
++\frac{\eps}{4}\frac{\Gamma(2+\alpha)}{\Gamma(2)}x
+-\frac{\eps}{3}\frac{\Gamma(2\alpha+1)}{\Gamma(\alpha+1)}x^\alpha
+\\
+&\quad
++(1+x+x^2)
+\left(
+x^\alpha
+-\frac12 x
++\frac14 x^{1+\alpha}
+-\frac13 x^{2\alpha}
+\right).
+\end{aligned}
+\end{equation}
+
+\medskip
+\noindent
+\textbf{Что проверяет эта задача.}
+На этой задаче следует ожидать спектральной или, по крайней мере,
+супералгебраической сходимости по $N$, поскольку решение согласовано
+с естественным набором показателей метода.
+
+\subsection{Задача 3: решение вне естественного Müntz-класса}
+
+Для проверки робастности метода на ``несогласованных'' решениях рассмотрим
+\[
+a(x)=1+x,
+\qquad
+a_0=1,
+\]
+и зададим точное решение
+\begin{equation}
+\label{eq:test3-uex}
+u_{\mathrm{ex}}(x)
+=
+\ell_\eps(x)+x^\beta,
+\qquad
+\beta=\sqrt{2}.
+\end{equation}
+Тогда
+\begin{equation}
+\label{eq:test3-f}
+f(x)
+=
+x\ell_\eps(x)
++
+\eps \frac{\Gamma(\beta+1)}{\Gamma(\beta+1-\alpha)}x^{\beta-\alpha}
++
+(1+x)x^\beta.
+\end{equation}
+
+\medskip
+\noindent
+\textbf{Что проверяет эта задача.}
+Показатель $\beta=\sqrt2$ не согласован с полугруппой $\Lambda_\alpha$,
+поэтому на этой задаче следует ожидать более медленной сходимости.
+Тем не менее метод должен сохранять устойчивость и демонстрировать
+предсказуемое ухудшение скорости, а не потерю работоспособности.
+
+\subsection{Задача 4: \texorpdfstring{$\eps$}{eps}-равномерное разрешение начального слоя}
+
+Для проверки равномерности по малому параметру $\eps$ рекомендуется использовать задачу~2
+при серии значений
+\[
+\eps=10^{-1},\ 10^{-3},\ 10^{-5},\ 10^{-7}.
+\]
+При этом следует измерять ошибки
+\[
+E_N^{(2)}(\eps):=\norm{u_{\mathrm{ex}}-u_N}_{L^2(0,1)},
+\qquad
+E_N^{(\infty)}(\eps):=\norm{u_{\mathrm{ex}}-u_N}_{L^\infty(0,1)},
+\]
+для фиксированных $N$ и анализировать, насколько эти ошибки устойчивы
+при уменьшении $\eps$.
+
+Кроме того, полезно визуализировать решение в растянутой переменной
+\[
+\xi=\frac{x}{\eps^{1/\alpha}},
+\]
+поскольку именно на масштабе $x=O(\eps^{1/\alpha})$ формируется дробный начальный слой.
+
+\medskip
+\noindent
+\textbf{Что проверяет эта задача.}
+Данный тест проверяет, не деградирует ли аппроксимация при сжатии слоя
+в окрестность точки $x=0$, и подтверждает ли схема заявленную
+$\eps$-равномерную устойчивость.
+
+\subsection{Задача 5: проверка asymptotic-preserving свойства}
+
+Возьмём ту же постановку, что и в задаче~2. Тогда при $\eps\to0$ точное решение
+\eqref{eq:test2-uex} стремится в $L^2(0,1)$ к предельной функции
+\begin{equation}
+\label{eq:test5-u0}
+u^{0}(x)
+=
+x^\alpha
+-\frac12 x
++\frac14 x^{1+\alpha}
+-\frac13 x^{2\alpha},
+\end{equation}
+а предельная правая часть равна
+\begin{equation}
+\label{eq:test5-f0}
+f^{0}(x)=a(x)u^0(x).
+\end{equation}
+
+Для фиксированного $N$ следует решать предельную дискретную задачу:
+найти $\overline u_N\in W_N^\alpha$ такую, что
+\begin{equation}
+\label{eq:test5-limit-discrete}
+\inner{a\overline u_N-f^0}{w_N}=0,
+\qquad \forall w_N\in W_N^\alpha,
+\end{equation}
+и затем сравнивать её с решением полной задачи:
+\begin{equation}
+\label{eq:test5-AP-error}
+A_N(\eps):=\norm{u_N^\eps-\overline u_N}_{L^2(0,1)}.
+\end{equation}
+
+\medskip
+\noindent
+\textbf{Что проверяет эта задача.}
+Если метод действительно является asymptotic-preserving, то при фиксированном $N$
+должно наблюдаться
+\[
+A_N(\eps)\to 0 \qquad \text{при } \eps\to0.
+\]
+
+\subsection{Задача 6: зависимость от величины возмущения коэффициента}
+
+Для проверки роли параметра
+\[
+\rho=\frac{\norm{a-a_c}_{L^\infty}}{a_c}
+\]
+в теории устойчивости полезно рассмотреть семейство коэффициентов
+\[
+a_\delta(x)=1+\delta(2x-1),
+\qquad 0<\delta<1.
+\]
+Здесь
+\[
+a_0=1-\delta,
+\qquad
+a_c=1,
+\qquad
+\rho=\delta.
+\]
+В качестве точного решения можно взять
+\begin{equation}
+\label{eq:test6-uex}
+u_{\mathrm{ex}}(x)=\ell_\eps(x)+x,
+\qquad
+\ell_\eps(x)=E_\alpha\!\left(-\frac{1-\delta}{\eps}x^\alpha\right),
+\end{equation}
+а правая часть тогда равна
+\begin{equation}
+\label{eq:test6-f}
+f(x)
+=
+2\delta x\,\ell_\eps(x)
++
+\eps \frac{1}{\Gamma(2-\alpha)}x^{1-\alpha}
++
+a_\delta(x)x.
+\end{equation}
+
+Следует провести вычисления, например, для
+\[
+\delta\in\{0.2,\,0.5,\,0.8,\,0.95\}.
+\]
+
+\medskip
+\noindent
+\textbf{Что проверяет эта задача.}
+Данный тест позволяет эмпирически изучить, как с ростом $\rho$ меняются:
+\begin{enumerate}[label=\textup{(\alph*)}]
+\item точность;
+\item число обусловленности матрицы $A$;
+\item устойчивость вычислений;
+\item скорость сходимости итерационных решателей (если они используются).
+\end{enumerate}
+
+\subsection{Рекомендуемые численные характеристики}
+
+Для задач с известным точным решением рекомендуется вычислять:
+\begin{align}
+E_N^{(2)} &:= \norm{u_{\mathrm{ex}}-u_N}_{L^2(0,T)}, \\
+E_N^{(\infty)} &:= \norm{u_{\mathrm{ex}}-u_N}_{L^\infty(0,T)}, \\
+R_N^{(2)} &:= \norm{\eps \Dc u_N + a u_N - f}_{L^2(0,T)}.
+\end{align}
+Для задачи 1 дополнительно следует контролировать ошибку воспроизведения:
+\[
+E_{N,\mathrm{repr}}:=\norm{u_{\mathrm{ex}}-u_N}_{L^\infty(0,T)}.
+\]
+Для задачи 5 естественно измерять AP-ошибку \eqref{eq:test5-AP-error}.
+Для задачи 6 полезно также регистрировать число обусловленности
+\[
+\kappa_2(A)
+\]
+дискретной матрицы системы.
+
+\subsection{Ожидаемые качественные результаты}
+
+На основании построенной теории ожидаются следующие результаты:
+\begin{enumerate}[label=\textup{(\roman*)}]
+\item в задаче~1 решение воспроизводится с точностью до ошибок квадратуры и машинного округления;
+\item в задаче~2 наблюдается спектральное убывание ошибки по $N$;
+\item в задаче~3 скорость сходимости ниже, но устойчивость сохраняется;
+\item в задаче~4 при фиксированном $N$ ошибка не должна катастрофически расти при $\eps\to0$;
+\item в задаче~5 должно выполняться $A_N(\eps)\to0$ при $\eps\to0$;
+\item в задаче~6 ухудшение численных характеристик при росте $\rho$ должно быть плавным
+и согласованным с теоретическим условием $\rho<1$.
+\end{enumerate}
+
+Тем самым предложенный набор тестов позволяет отдельно и содержательно проверить
+все ключевые свойства нового метода:
+точность operator-induced базиса, спектральную эффективность, устойчивость
+в сингулярно возмущённом режиме и асимптотическую согласованность.
+
+\section{Реальные прикладные задачи для валидации метода}
+\label{sec:real-benchmarks}
+
+В этом разделе вместо искусственно сконструированных \emph{manufactured solutions}
+предлагаются реальные прикладные задачи, для которых в литературе уже существуют
+либо экспериментальные данные, либо опубликованные параметрические идентификации,
+либо устоявшиеся аналитические формулы для сравнения.
+Для первой публикации по новому методу я бы рекомендовал обязательно включить
+задачу~\ref{app:supercap}: она практически буквально совпадает с рассматриваемой
+моделью, допускает сравнение как с точным решением через функцию Миттаг--Леффлера,
+так и с опубликованными экспериментальными кривыми \cite{gomezaguilar2014rc,lopez2022cpe,kothari2021supercap,wang2020ultracap}.
+
+\subsection{Разряд/заряд суперконденсатора и дробный RC--CPE элемент}
+\label{app:supercap}
+
+Одна из наиболее естественных прикладных постановок возникает в моделях
+суперконденсаторов, батарей и RC-цепей с \emph{constant phase element} (CPE).
+В простейшей одноветвевой time-domain модели напряжение $V_c(t)$ на дробно-ёмкостном
+элементе удовлетворяет уравнению
+\begin{equation}
+\label{eq:app-supercap}
+R_s C_\alpha D_t^\alpha V_c(t) + V_c(t) = V_{\mathrm{in}}(t),
+\qquad
+t\in(0,T],
+\qquad
+V_c(0)=V_0,
+\end{equation}
+где $R_s$ --- последовательное сопротивление, $C_\alpha$ --- дробная ёмкость,
+$0<\alpha<1$, а $V_{\mathrm{in}}(t)$ --- приложенное напряжение
+\cite{gomezaguilar2014rc,lopez2022cpe,kothari2021supercap}.
+
+Эта задача \emph{в точности} приводится к исследуемой модели:
+\[
+u(t)=V_c(t),
+\qquad
+\eps = R_s C_\alpha,
+\qquad
+a(t)\equiv 1,
+\qquad
+f(t)=V_{\mathrm{in}}(t).
+\]
+
+\paragraph{Чистый разряд.}
+Если после предварительного заряда источник отключён, то $V_{\mathrm{in}}(t)\equiv0$,
+и получаем
+\begin{equation}
+\label{eq:app-supercap-discharge}
+\eps D_t^\alpha u(t)+u(t)=0,
+\qquad
+u(0)=V_0,
+\end{equation}
+с точным решением
+\begin{equation}
+\label{eq:app-supercap-discharge-exact}
+u(t)=V_0\,E_\alpha\!\left(-\frac{t^\alpha}{\eps}\right)
+=
+V_0\,E_\alpha\!\left(-\frac{t^\alpha}{R_s C_\alpha}\right).
+\end{equation}
+
+\paragraph{Ступенчатый заряд.}
+Если на вход подаётся постоянное напряжение $V_\star$, то
+\begin{equation}
+\label{eq:app-supercap-charge}
+\eps D_t^\alpha u(t)+u(t)=V_\star,
+\qquad
+u(0)=V_0,
+\end{equation}
+и
+\begin{equation}
+\label{eq:app-supercap-charge-exact}
+u(t)=V_\star + \bigl(V_0-V_\star\bigr)
+E_\alpha\!\left(-\frac{t^\alpha}{\eps}\right).
+\end{equation}
+
+\paragraph{Почему это хороший benchmark.}
+\begin{enumerate}[label=\textup{(\roman*)}]
+\item Физическая постановка совпадает с математической почти без редукции.
+\item Есть точное решение через функцию Миттаг--Леффлера, поэтому можно отдельно
+проверять \emph{численную корректность}.
+\item Есть опубликованные time-domain и EIS-сопоставления для fractional RC/CPE
+и суперконденсаторов, поэтому можно отдельно проверять \emph{прикладную релевантность}
+\cite{lopez2022cpe,kothari2021supercap,wang2020ultracap}.
+\item При малом $R_s C_\alpha$ и фиксированном горизонте наблюдения $T$
+задача действительно работает в сингулярно возмущённом режиме.
+\end{enumerate}
+
+\paragraph{Как сравнивать с известными результатами.}
+\begin{enumerate}[label=\textup{(\alph*)}]
+\item Взять из литературы опубликованные параметры $(R_s,C_\alpha,\alpha)$
+для конкретного суперконденсатора или CPE-модели \cite{kothari2021supercap,wang2020ultracap}.
+\item Посчитать $u_N(t)$ новым методом.
+\item Сравнить:
+\[
+\max_{t\in[0,T]} |u_N(t)-u_{\mathrm{exp}}(t)|,
+\qquad
+\mathrm{RMSE},
+\qquad
+\norm{u_N-u_{\mathrm{ML}}}_{L^\infty(0,T)},
+\]
+где $u_{\mathrm{exp}}$ --- экспериментальная кривая, а $u_{\mathrm{ML}}$ ---
+точная кривая \eqref{eq:app-supercap-discharge-exact} или
+\eqref{eq:app-supercap-charge-exact}.
+\item Отдельно измерить чувствительность ошибки к уменьшению $\eps=R_sC_\alpha$.
+\end{enumerate}
+
+\subsection{Диэлектрическая релаксация биоткани или полимера после ступенчатого поля}
+\label{app:dielectric}
+
+В моделях диэлектрической релаксации неизвестной может быть поляризация $P(t)$,
+которая после приложения ступенчатого электрического поля $E_0$ удовлетворяет
+уравнению
+\begin{equation}
+\label{eq:app-dielectric}
+\tau^\alpha D_t^\alpha P(t)+P(t)=\chi E_0,
+\qquad
+t\in(0,T],
+\qquad
+P(0)=P_0.
+\end{equation}
+Здесь $\tau$ --- характерное время релаксации, $\chi$ --- коэффициент отклика.
+Именно такого типа Caputo-модели используются в работах по дробной модели
+диэлектрической релаксации и сопоставляются с данными по биотканям
+(в частности, human aorta) и полимерным системам \cite{ciancio2017dielectric,renteria2025polymer}.
+
+Эта задача опять же имеет вид
+\[
+u(t)=P(t),
+\qquad
+\eps=\tau^\alpha,
+\qquad
+a(t)\equiv1,
+\qquad
+f(t)=\chi E_0.
+\]
+Для неё известно точное решение
+\begin{equation}
+\label{eq:app-dielectric-exact}
+P(t)=\chi E_0 + \bigl(P_0-\chi E_0\bigr)
+E_\alpha\!\left(-\frac{t^\alpha}{\tau^\alpha}\right).
+\end{equation}
+
+\paragraph{Продвинутый вариант с переменным коэффициентом.}
+Если эксперимент проводится при линейном температурном прогоне
+\[
+T(t)=T_0+\beta t,
+\]
+а время релаксации зависит от температуры, например по закону Аррениуса
+или по кооперативной модели, то после нормировки можно получить постановку
+\begin{equation}
+\label{eq:app-dielectric-variable}
+\eps D_t^\alpha P(t)+a(t)P(t)=f(t),
+\end{equation}
+где
+\[
+a(t)=\frac{\eps}{\tau(T(t))^\alpha},
+\qquad
+f(t)=a(t)\chi E_0.
+\]
+Это уже реальная прикладная задача с \emph{непостоянным} коэффициентом $a(t)$,
+что особенно интересно для тестирования предлагаемого метода
+\cite{renteria2025polymer}.
+
+\paragraph{Как сравнивать с известными результатами.}
+\begin{enumerate}[label=\textup{(\alph*)}]
+\item Взять опубликованные параметры дробной диэлектрической модели
+для biological tissues или polymer datasets \cite{ciancio2017dielectric,renteria2025polymer}.
+\item Решить time-domain задачу \eqref{eq:app-dielectric}
+или \eqref{eq:app-dielectric-variable}.
+\item Если доступны time-domain данные поляризации, сравнить с ними напрямую.
+\item Если в литературе приведены frequency-domain данные по комплексной
+диэлектрической проницаемости, восстановить отклик из time-domain решения, например,
+через преобразование
+\begin{equation}
+\label{eq:app-dielectric-fourier}
+\varepsilon^\ast(\omega)
+=
+\varepsilon_\infty
++
+\frac{1}{E_0}
+\int_0^\infty e^{-i\omega t}\,\dot P(t)\,dt,
+\end{equation}
+и сравнить положения пиков, ширины пиков и значения потерь
+с опубликованными спектрами.
+\end{enumerate}
+
+\paragraph{Что именно проверяет эта задача.}
+Эта постановка полезна не только как test of accuracy, но и как test of interpretation:
+метод должен корректно воспроизводить очень медленную релаксацию,
+начальный слой и переход к частотным характеристикам.
+
+\subsection{Ползучесть frozen soil в fractional Kelvin--Voigt модели}
+\label{app:frozen-soil}
+
+В геомеханике и реологии для описания ползучести при постоянной нагрузке
+широко используется fractional Kelvin--Voigt модель.
+Если на образец действует постоянное напряжение $\sigma_0$, то деформация
+$\varepsilon_m(t)$ удовлетворяет
+\begin{equation}
+\label{eq:app-creep}
+\eta_\alpha D_t^\alpha \varepsilon_m(t)+E\,\varepsilon_m(t)=\sigma_0,
+\qquad
+t\in(0,T],
+\qquad
+\varepsilon_m(0)=0,
+\end{equation}
+где $E$ --- упругий модуль, а $\eta_\alpha$ --- дробный вязкоупругий параметр.
+Именно такие fractional Kelvin--Voigt постановки используются для описания
+ползучести frozen soil и сравниваются с результатами SIT-, uniaxial- и triaxial-creep
+испытаний \cite{zhang2022frozen}.
+
+Отождествление с нашей задачей здесь такое:
+\[
+u(t)=\varepsilon_m(t),
+\qquad
+\eps=\eta_\alpha,
+\qquad
+a(t)\equiv E,
+\qquad
+f(t)=\sigma_0.
+\]
+Точное решение имеет вид
+\begin{equation}
+\label{eq:app-creep-exact}
+\varepsilon_m(t)
+=
+\frac{\sigma_0}{E}
+\left[
+1-
+E_\alpha\!\left(-\frac{E}{\eta_\alpha}t^\alpha\right)
+\right].
+\end{equation}
+
+\paragraph{Практический смысл этого benchmark-а.}
+\begin{enumerate}[label=\textup{(\roman*)}]
+\item Это настоящая time-domain механическая задача с экспериментальными кривыми
+``деформация--время''.
+\item Задача имеет правильное bounded-creep поведение:
+\[
+\varepsilon_m(t)\to \frac{\sigma_0}{E}, \qquad t\to\infty,
+\]
+что позволяет проверять не только начальный слой, но и правильную long-time asymptotics.
+\item При малом $\eta_\alpha$ возникает быстрый начальный переход, то есть режим,
+где новый метод должен проявить преимущество перед обычными time-marching схемами.
+\end{enumerate}
+
+\paragraph{Как сравнивать с известными результатами.}
+\begin{enumerate}[label=\textup{(\alph*)}]
+\item Взять из опубликованных frozen-soil тестов параметры $(E,\eta_\alpha,\alpha)$
+или сами деформационные кривые \cite{zhang2022frozen}.
+\item Для постоянного напряжения $\sigma_0$ вычислить $u_N(t)$.
+\item Сравнить:
+\[
+\mathrm{RMSE},
+\qquad
+\norm{u_N-u_{\mathrm{exp}}}_{L^\infty(0,T)},
+\qquad
+\left|u_N(T)-\frac{\sigma_0}{E}\right|.
+\]
+\item Отдельно исследовать, насколько устойчиво работает метод при уменьшении
+$\eta_\alpha$ и при увеличении длительности наблюдения $T$.
+\end{enumerate}
+
+\subsection{Какую задачу ставить в первую численную статью}
+
+Если нужен \emph{один главный} прикладной benchmark, то я бы поставил на первое место
+задачу~\ref{app:supercap}. Причины следующие:
+\begin{enumerate}[label=\textup{(\roman*)}]
+\item математическая модель почти буквально совпадает с целевым уравнением;
+\item есть и точное решение, и экспериментальные кривые;
+\item вопрос корректной инициализации для Caputo/CPE-моделей сам по себе нетривиален,
+поэтому это хороший стресс-тест для метода;
+\item в литературе fractional-order модели суперконденсаторов считаются более точными,
+чем простые integer-order RC-модели, так что сравнение будет содержательным
+не только математически, но и инженерно \cite{lopez2022cpe,wang2020ultracap}.
+\end{enumerate}
+
+Задачу~\ref{app:frozen-soil} я бы поставил второй: она хорошо показывает,
+что метод работает не только на электротехнических примерах, но и на реологических
+данных реального материала.
+Задачу~\ref{app:dielectric} удобно использовать как третий пример,
+особенно если хочется продемонстрировать версию с переменным коэффициентом $a(t)$
+через температурный прогон.
+
+\bibliographystyle{plain} % или ieeetr, unsrt, alpha и т.д.
+\bibliography{references}
+
+\end{document}
