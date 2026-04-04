@@ -1,17 +1,39 @@
 # RI-MML
 
-Реализация резольвентно-индуцированного Muntz--Mittag--Leffler спектрального метода Petrov--Galerkin из [article.tex](/c:/Users/danii/Desktop/Diss/ri-mml/article.tex).
+Resolvent-induced Muntz-Mittag-Leffler Petrov-Galerkin solver for scalar fractional initial-value problems of the form
 
-## Состав
+`epsilon D_t^alpha u(t) + a(t) u(t) = f(t),   0 < alpha < 1,   u(0) = u0`.
 
-- ООП-модель задачи `FractionalProblem`
-- полугруппа показателей `Lambda_alpha`
-- ортонормированный Müntz-базис
-- operator-induced trial-базис `Phi_j = R_c M_j`
-- сборка и решение дискретной схемы
-- вычисление функции Миттаг--Леффлера через `pymittagleffler` с внутренним fallback
+## Scope
 
-## Минимальный пример
+The current implementation supports a pointwise initial condition only. It does not implement history-dependent or prehistory-dependent initialization.
+
+This matters for validation:
+
+- `verification` is strong: the repository now includes closed-form exact tests and manufactured-solution convergence studies.
+- `validation` is narrow: only literature cases compatible with the current solver assumptions are allowed to make quantitative claims.
+- `limitations` are explicit: Lopez-style history-dependent initialization is not supported, and several literature comparisons remain qualitative or replay-only.
+
+## Install
+
+```bash
+pip install -e .[benchmarks]
+```
+
+## Run The Full Validation Pipeline
+
+```bash
+python -m benchmarks
+```
+
+Artifacts are written to:
+
+- `benchmarks/results/` for machine-readable CSV/JSON outputs
+- `benchmarks/results/tables/` for paper-ready tables
+- `benchmarks/report/validation_report.md` for the full report
+- `benchmarks/report/paper_validation_summary.md` for the paper-style summary
+
+## Minimal Solver Example
 
 ```python
 import numpy as np

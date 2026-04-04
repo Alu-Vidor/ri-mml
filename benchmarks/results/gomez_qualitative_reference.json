@@ -1,0 +1,10 @@
+{
+  "benchmark_id": "gomez_qualitative_reference",
+  "validation_category": "validation_literature_qualitative",
+  "source_paper": "Gomez-Aguilar et al. fractional RC/CPE response paper",
+  "model_match_level": "qualitative",
+  "data_source": "digitized_pdf",
+  "initialization_type": "pointwise",
+  "claim_level": "qualitative_validation",
+  "message": "Gomez is retained only as a structural reference for the qualitative trend with varying gamma. It is not used for strict quantitative validation of the present RI-MML solver."
+}

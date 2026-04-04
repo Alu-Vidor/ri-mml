@@ -1,0 +1,10 @@
+{
+  "benchmark_id": "wang_external_reference",
+  "validation_category": "validation_literature_qualitative",
+  "source_paper": "Wang et al. 2020 lithium-ion battery and ultra-capacitor study",
+  "model_match_level": "qualitative",
+  "data_source": "manual_table_transcription",
+  "initialization_type": "history-dependent",
+  "claim_level": "qualitative_validation",
+  "message": "Wang is treated as an external reference only. The published model structure is richer than the present one-term RI-MML solver, so no strict quantitative validation claim is made."
+}

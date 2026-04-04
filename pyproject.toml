@@ -14,5 +14,17 @@ dependencies = [
   "pymittagleffler>=0.1.9",
 ]
 
+[project.optional-dependencies]
+benchmarks = [
+  "pandas>=2.2",
+  "matplotlib>=3.8",
+  "opencv-python-headless>=4.10",
+  "PyMuPDF>=1.24",
+  "Markdown>=3.6",
+]
+
+[project.scripts]
+rimml-benchmarks = "benchmarks.run_all:main"
+
 [tool.setuptools.packages.find]
-include = ["rimml*"]
+include = ["rimml*", "benchmarks*"]

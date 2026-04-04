@@ -5,20 +5,24 @@ import numpy as np
 import pandas as pd
 
 from .api import ProblemConfig, SolverRunConfig, solve_fractional_ivp
-from .utils import RESULTS_DIR, write_csv
+from .utils import RESULTS_DIR, write_csv, write_json
 
 
-def run_gomez_benchmark() -> dict:
+SOURCE_PAPER = "Gomez-Aguilar et al. fractional RC/CPE response paper"
+
+
+def run_gomez_qualitative_reference() -> dict:
     gammas = [1.0, 0.98, 0.96]
-    R = 1.0
-    C = 0.1
+    resistance = 1.0
+    capacitance = 0.1
     omega = 2.0 * np.pi * 60.0
-    t_end = 0.08 * R * C
+    t_end = 0.08 * resistance * capacitance
     rows = []
     curves = {}
+
     for gamma in gammas:
-        alpha = gamma if gamma < 1.0 else 0.999999
-        tau_gamma = (R * C) / (R * C) ** (1.0 - gamma)
+        alpha = min(gamma, 0.999999)
+        tau_gamma = (resistance * capacitance) / (resistance * capacitance) ** (1.0 - gamma)
         solution = solve_fractional_ivp(
             ProblemConfig(
                 alpha=alpha,
@@ -33,18 +37,25 @@ def run_gomez_benchmark() -> dict:
             SolverRunConfig(basis_size=18),
         )
         voltage = solution.u
-        charge = C * voltage
-        current = (np.sin(omega * solution.t) - voltage) / R
-        curves[gamma] = {"t": solution.t / (R * C), "charge": charge, "voltage": voltage, "current": current}
+        charge = capacitance * voltage
+        current = (np.sin(omega * solution.t) - voltage) / resistance
+        curves[gamma] = {"t": solution.t / (resistance * capacitance), "charge": charge, "voltage": voltage, "current": current}
         rows.extend(
             {
+                "benchmark_id": "gomez_qualitative_reference",
+                "validation_category": "validation_literature_qualitative",
+                "source_paper": SOURCE_PAPER,
+                "model_match_level": "qualitative",
+                "data_source": "digitized_pdf",
+                "initialization_type": "pointwise",
+                "claim_level": "qualitative_validation",
                 "gamma": gamma,
                 "t_over_rc": float(tt),
                 "charge": float(qt),
                 "voltage": float(vt),
                 "current": float(it),
             }
-            for tt, qt, vt, it in zip(solution.t / (R * C), charge, voltage, current, strict=True)
+            for tt, qt, vt, it in zip(solution.t / (resistance * capacitance), charge, voltage, current, strict=True)
         )
 
     fig, axes = plt.subplots(3, 1, figsize=(8, 10), constrained_layout=True)
@@ -56,15 +67,26 @@ def run_gomez_benchmark() -> dict:
     axes[1].set_ylabel("voltage")
     axes[2].set_ylabel("current")
     axes[2].set_xlabel("t / RC")
-    for ax in axes:
-        ax.grid(True, alpha=0.3)
-        ax.legend()
-    fig.savefig(RESULTS_DIR / "plots" / "gomez_rc_sanity.png", dpi=180)
+    for axis in axes:
+        axis.grid(True, alpha=0.3)
+        axis.legend()
+    fig.savefig(RESULTS_DIR / "plots" / "gomez_qualitative_reference.png", dpi=180)
     plt.close(fig)
 
-    write_csv(RESULTS_DIR / "metrics_gomez.csv", pd.DataFrame(rows))
-    return {
-        "source": "additional_inf/ArticuloPublicado.PDF",
-        "mode": "qualitative sanity-check",
-        "parameters": {"R": R, "C": C, "omega": omega, "gammas": gammas},
+    frame = pd.DataFrame(rows)
+    write_csv(RESULTS_DIR / "validation_gomez_qualitative.csv", frame)
+    note = {
+        "benchmark_id": "gomez_qualitative_reference",
+        "validation_category": "validation_literature_qualitative",
+        "source_paper": SOURCE_PAPER,
+        "model_match_level": "qualitative",
+        "data_source": "digitized_pdf",
+        "initialization_type": "pointwise",
+        "claim_level": "qualitative_validation",
+        "message": (
+            "Gomez is retained only as a structural reference for the qualitative trend with varying gamma. "
+            "It is not used for strict quantitative validation of the present RI-MML solver."
+        ),
     }
+    write_json(RESULTS_DIR / "gomez_qualitative_reference.json", note)
+    return note

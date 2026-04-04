@@ -1,0 +1,8 @@
+{
+  "source_paper": "Kothari et al. 2021 supercapacitor RC-CPE study",
+  "model_match_level": "reduced",
+  "strict_mode_description": "Published table parameters and pointwise zero initial state only; no inferred intercept fitting.",
+  "replay_mode_description": "Allows digitized curves, inferred initial conditions, and figure-based alignment for exploratory replay.",
+  "strict_rows": 5,
+  "replay_rows": 10
+}

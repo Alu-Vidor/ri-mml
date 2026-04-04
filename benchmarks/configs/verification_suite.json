@@ -1,0 +1,116 @@
+{
+  "seed": 0,
+  "evaluation_points": 2049,
+  "basis_sizes": [
+    4,
+    6,
+    8,
+    10,
+    12,
+    16,
+    20,
+    24
+  ],
+  "solver": {
+    "quadrature_panels": 48,
+    "quadrature_order": 10,
+    "quadrature_grading": 2.5,
+    "exponent_tolerance": 1e-12,
+    "mittag_leffler_tolerance": 1e-13,
+    "mittag_leffler_max_terms": 2000
+  },
+  "exact_cases": [
+    {
+      "case_id": "mlf_charge_a0p75",
+      "alpha": 0.35,
+      "epsilon": 0.1,
+      "coefficient_value": 0.75,
+      "equilibrium_value": 1.0,
+      "u0": 0.2,
+      "interval_end": 1.0
+    },
+    {
+      "case_id": "mlf_charge_a1p50",
+      "alpha": 0.65,
+      "epsilon": 0.01,
+      "coefficient_value": 1.5,
+      "equilibrium_value": 1.2,
+      "u0": -0.1,
+      "interval_end": 1.0
+    },
+    {
+      "case_id": "mlf_discharge_a1p00",
+      "alpha": 0.85,
+      "epsilon": 0.005,
+      "coefficient_value": 1.0,
+      "equilibrium_value": 0.0,
+      "u0": 1.0,
+      "interval_end": 1.0
+    },
+    {
+      "case_id": "mlf_charge_small_eps",
+      "alpha": 0.92,
+      "epsilon": 0.0001,
+      "coefficient_value": 1.0,
+      "equilibrium_value": 0.8,
+      "u0": 0.05,
+      "interval_end": 0.5
+    }
+  ],
+  "manufactured_cases": [
+    {
+      "case_id": "smooth_a035_eps1e-2",
+      "family": "smooth_analytic",
+      "alpha": 0.35,
+      "epsilon": 0.01,
+      "u0": 0.15,
+      "interval_end": 1.0,
+      "coefficient_kind": "affine"
+    },
+    {
+      "case_id": "smooth_a075_eps1e-3",
+      "family": "smooth_analytic",
+      "alpha": 0.75,
+      "epsilon": 0.001,
+      "u0": -0.1,
+      "interval_end": 1.0,
+      "coefficient_kind": "affine"
+    },
+    {
+      "case_id": "singular_a035_eps1e-2",
+      "family": "weak_endpoint_singularity",
+      "alpha": 0.35,
+      "epsilon": 0.01,
+      "u0": 0.4,
+      "interval_end": 1.0,
+      "coefficient_kind": "fractional_power"
+    },
+    {
+      "case_id": "singular_a075_eps5e-4",
+      "family": "weak_endpoint_singularity",
+      "alpha": 0.75,
+      "epsilon": 0.0005,
+      "u0": 0.1,
+      "interval_end": 1.0,
+      "coefficient_kind": "fractional_power"
+    },
+    {
+      "case_id": "aligned_a045_eps1e-3",
+      "family": "trial_space_aligned",
+      "alpha": 0.45,
+      "epsilon": 0.001,
+      "u0": 0.2,
+      "interval_end": 1.0,
+      "coefficient_kind": "constant"
+    },
+    {
+      "case_id": "aligned_a080_eps1e-4",
+      "family": "trial_space_aligned",
+      "alpha": 0.8,
+      "epsilon": 0.0001,
+      "u0": -0.05,
+      "interval_end": 1.0,
+      "coefficient_kind": "constant"
+    }
+  ]
+}

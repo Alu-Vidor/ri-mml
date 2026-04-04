@@ -1,16 +1,9 @@
 {
-  "exact": {
-    "rows": 126,
-    "alphas": [
-      0.45,
-      0.75,
-      0.95
-    ],
-    "epsilons": [
-      0.1,
-      0.001,
-      1e-05
-    ],
+  "entrypoint": "python -m benchmarks",
+  "deterministic_seed": 0,
+  "solver_initialization_support": "pointwise_only",
+  "verified": {
+    "seed": 0,
     "basis_sizes": [
       4,
       6,
@@ -18,47 +11,67 @@
       10,
       12,
       16,
-      20
-    ]
-  },
-  "kothari": {
-    "scenarios": [
-      "K1",
-      "K2",
-      "K3",
-      "K4",
-      "K5",
-      "K6"
+      20,
+      24
     ],
-    "rows": 15
+    "evaluation_points": 2049,
+    "verification_exact_cases": 4,
+    "verification_convergence_cases": 6,
+    "best_exact_l2_abs": 0.0,
+    "worst_exact_l2_abs": 1.0861503363047846e-06,
+    "best_manufactured_l2_abs": 1.7074752898449268e-07,
+    "worst_manufactured_l2_abs": 0.0003519958408500757
   },
-  "lopez": {
-    "source": "additional_inf/energies-15-00792-v2.pdf",
-    "message": "Current RI-MML solver supports only a pointwise IVP state u(0)=u0. It does not represent history-dependent initialized operators, so Lopez tests are analytic limitation checks."
+  "validation_literature_quantitative": {
+    "kothari_strict": 5
   },
-  "gomez": {
-    "source": "additional_inf/ArticuloPublicado.PDF",
-    "mode": "qualitative sanity-check",
-    "parameters": {
-      "R": 1.0,
-      "C": 0.1,
-      "omega": 376.99111843077515,
-      "gammas": [
-        1.0,
-        0.98,
-        0.96
+  "validation_literature_qualitative": {
+    "kothari_replay": 10,
+    "gomez": {
+      "benchmark_id": "gomez_qualitative_reference",
+      "validation_category": "validation_literature_qualitative",
+      "source_paper": "Gomez-Aguilar et al. fractional RC/CPE response paper",
+      "model_match_level": "qualitative",
+      "data_source": "digitized_pdf",
+      "initialization_type": "pointwise",
+      "claim_level": "qualitative_validation",
+      "message": "Gomez is retained only as a structural reference for the qualitative trend with varying gamma. It is not used for strict quantitative validation of the present RI-MML solver."
+    },
+    "wang": {
+      "benchmark_id": "wang_external_reference",
+      "validation_category": "validation_literature_qualitative",
+      "source_paper": "Wang et al. 2020 lithium-ion battery and ultra-capacitor study",
+      "model_match_level": "qualitative",
+      "data_source": "manual_table_transcription",
+      "initialization_type": "history-dependent",
+      "claim_level": "qualitative_validation",
+      "message": "Wang is treated as an external reference only. The published model structure is richer than the present one-term RI-MML solver, so no strict quantitative validation claim is made."
+    }
+  },
+  "limitations": {
+    "lopez": {
+      "benchmark_id": "lopez_initialization_limit",
+      "validation_category": "limitations",
+      "source_paper": "Lopez-Villanueva et al. 2022 history-dependent initialization study",
+      "model_match_level": "surrogate",
+      "data_source": "manual_table_transcription",
+      "initialization_type": "history-dependent",
+      "claim_level": "limitation_only",
+      "message": "Current RI-MML solver supports only a pointwise initial condition u(0)=u0. It does not implement history-dependent initialization, so Lopez is included only to document a boundary of applicability.",
+      "not_supported": [
+        "history-dependent initialized operators",
+        "prehistory-dependent CPE state reconstruction",
+        "one-to-one replay of Lopez decay curves with the present solver"
+      ],
+      "supported_surrogate_only": [
+        "analytic decay families g1/g2/g3 as external references",
+        "multi-exponential surrogate g4 comparison"
       ]
     }
   },
   "report": {
-    "markdown": "C:\\Users\\danii\\Desktop\\Diss\\ri-mml\\benchmarks\\report\\benchmark_report.md",
-    "html": "C:\\Users\\danii\\Desktop\\Diss\\ri-mml\\benchmarks\\report\\benchmark_report.html"
-  },
-  "key_metrics": {
-    "exact_best_linf": 2.710505431213761e-20,
-    "exact_best_l2": 2.7691630376690118e-21,
-    "kothari_best_rmse": 0.0963570907429696,
-    "kothari_worst_rmse": 0.6962985938405122,
-    "kothari_rows": 15
+    "markdown": "C:\\Users\\danii\\Desktop\\Diss\\ri-mml\\benchmarks\\report\\validation_report.md",
+    "html": "C:\\Users\\danii\\Desktop\\Diss\\ri-mml\\benchmarks\\report\\validation_report.html",
+    "paper_summary": "C:\\Users\\danii\\Desktop\\Diss\\ri-mml\\benchmarks\\report\\paper_validation_summary.md"
   }
 }

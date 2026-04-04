@@ -11,136 +11,206 @@ def _markdown_table(frame: pd.DataFrame) -> str:
     if frame.empty:
         return "| empty |\n|---|\n| no rows |"
     safe = frame.copy()
-    safe.columns = [str(c) for c in safe.columns]
+    safe.columns = [str(column) for column in safe.columns]
     header = "| " + " | ".join(safe.columns) + " |"
-    sep = "| " + " | ".join(["---"] * len(safe.columns)) + " |"
-    body = []
-    for _, row in safe.iterrows():
-        body.append("| " + " | ".join(str(row[col]) for col in safe.columns) + " |")
-    return "\n".join([header, sep, *body])
+    separator = "| " + " | ".join(["---"] * len(safe.columns)) + " |"
+    body = ["| " + " | ".join(str(row[column]) for column in safe.columns) + " |" for _, row in safe.iterrows()]
+    return "\n".join([header, separator, *body])
+
+
+def _safe_min(frame: pd.DataFrame, column: str) -> float | None:
+    series = frame[column].dropna()
+    if series.empty:
+        return None
+    return float(series.min())
 
 
 def build_report_markdown() -> str:
-    exact = pd.read_csv(RESULTS_DIR / "metrics_exact.csv")
-    kothari = pd.read_csv(RESULTS_DIR / "metrics_kothari.csv")
-    lopez = pd.read_csv(RESULTS_DIR / "metrics_lopez.csv")
-    gomez = pd.read_csv(RESULTS_DIR / "metrics_gomez.csv")
-    lopez_note = read_json(RESULTS_DIR / "lopez_note.json")
-    kothari_mapping = read_json(RESULTS_DIR / "kothari_mapping_note.json")
+    verification_exact = pd.read_csv(RESULTS_DIR / "verification_exact.csv")
+    verification_convergence = pd.read_csv(RESULTS_DIR / "verification_convergence.csv")
+    kothari_strict = pd.read_csv(RESULTS_DIR / "validation_kothari_strict.csv")
+    kothari_replay = pd.read_csv(RESULTS_DIR / "validation_kothari_replay.csv")
+    lopez_note = read_json(RESULTS_DIR / "lopez_initialization_limit.json")
+    gomez_note = read_json(RESULTS_DIR / "gomez_qualitative_reference.json")
+    wang_note = read_json(RESULTS_DIR / "wang_external_reference.json")
+    wang_table = pd.read_csv(RESULTS_DIR / "validation_wang_external_reference.csv")
+
+    exact_best = verification_exact.groupby(["case_id", "alpha", "epsilon"], as_index=False)[["l2_abs", "l2_rel", "l_inf"]].min()
+    convergence_best = pd.read_csv(RESULTS_DIR / "tables" / "verification_convergence_best.csv")
+    convergence_rates = pd.read_csv(RESULTS_DIR / "tables" / "verification_convergence_rates.csv")
+    quantitative_best_rmse = _safe_min(kothari_strict, "rmse")
+    replay_best_rmse = _safe_min(kothari_replay, "rmse")
 
     lines: list[str] = []
-    lines.append("# Benchmark Report")
+    lines.append("# Validation Report")
     lines.append("")
-    lines.append("## 1. Overview")
+    lines.append("## What this report validates")
     lines.append("")
-    lines.append("This report was generated from a script-based benchmark harness around the existing RI-MML solver.")
-    lines.append("Used sources: `additional_inf/Kajal.pdf`, `additional_inf/energies-15-00792-v2.pdf`, `additional_inf/ArticuloPublicado.PDF`, `additional_inf/j.apenergy.2020.115736.pdf`.")
+    lines.append("- Verification of the RI-MML implementation on closed-form Mittag-Leffler test problems in the same mathematical setting as the solver.")
+    lines.append("- Verification of convergence behavior on manufactured solutions, including smooth, weakly singular, and trial-space-aligned families.")
+    lines.append("- A narrow quantitative literature comparison for Kothari zero-initial scenarios that can be replayed without inferred initial state fitting.")
     lines.append("")
-    lines.append("## 2. Exact-solution convergence")
+    lines.append("## What this report does not validate")
     lines.append("")
-    lines.append("Exact mapping: `epsilon D_t^alpha u + u = V*` with the closed-form Mittag-Leffler solution.")
+    lines.append("- It does not validate history-dependent initialization. The current solver supports pointwise initial condition only: `u(0)=u0`.")
+    lines.append("- It does not claim one-to-one replication of Lopez, Wang, or Gomez models when their published setup differs structurally from the present solver.")
+    lines.append("- It does not claim validation against raw experimental data when curves were digitized from PDF figures.")
     lines.append("")
-    best_exact = exact.groupby(["case", "alpha", "epsilon"], as_index=False)[["l_inf", "l2"]].min()
-    lines.append("### Table A. Exact benchmark convergence")
+    lines.append("## 1. Verification: Closed-Form Exact Problems")
     lines.append("")
-    lines.append(_markdown_table(best_exact))
+    lines.append("These cases reproduce analytic Mittag-Leffler solutions with fixed evaluation grids and deterministic solver settings.")
     lines.append("")
-    lines.append("## 3. Kothari main benchmark")
+    lines.append(_markdown_table(exact_best))
     lines.append("")
-    lines.append(f"Mapping note: {kothari_mapping['mapping']}")
-    lines.append("Digitized curves from PDF figures were used wherever raw experimental traces were unavailable.")
+    lines.append(
+        f"Best absolute L2 error across exact cases: `{verification_exact['l2_abs'].min():.3e}`. "
+        f"Worst absolute L2 error across exact cases: `{verification_exact['l2_abs'].max():.3e}`."
+    )
     lines.append("")
-    lines.append("### Table B. Kothari scenario-by-scenario metrics")
+    lines.append("## 2. Verification: Manufactured Convergence")
     lines.append("")
-    cols_b = [
-        c
-        for c in [
-            "scenario",
-            "source_refs",
-            "brand",
-            "capacitance_F",
+    lines.append("Manufactured solutions are grouped into smooth analytic, weak endpoint singularity, and trial-space-aligned families.")
+    lines.append("")
+    lines.append(_markdown_table(convergence_best))
+    lines.append("")
+    best_family_rates = convergence_rates.groupby("family", dropna=False)["l2_abs_observed_rate"].max().dropna()
+    if not best_family_rates.empty:
+        rate_text = ", ".join(f"{family}: {rate:.2f}" for family, rate in best_family_rates.items())
+        lines.append(f"Maximum observed local convergence-rate indicators by family: {rate_text}.")
+        lines.append("")
+    lines.append("## 3. Quantitatively Compared Literature Cases")
+    lines.append("")
+    if kothari_strict.empty:
+        lines.append("No literature case survived the strict quantitative-validation filter.")
+    else:
+        lines.append("Only Kothari zero-initial scenarios remain in this section. They use published Table 5 parameters and pointwise zero initial state, but comparison still relies on digitized curves from PDF figures.")
+        lines.append("")
+        lines.append(_markdown_table(kothari_strict[[
+            "benchmark_id",
+            "figure",
             "mode",
-            "mapping_status",
-            "digitized_used",
-            "parameters_origin",
+            "model_match_level",
+            "data_source",
+            "initialization_type",
+            "claim_level",
+            "duration_s",
             "rmse",
             "mae",
-            "mre",
             "e_inf",
-        ]
-        if c in kothari.columns
-    ]
-    lines.append(_markdown_table(kothari[cols_b]))
+        ]]))
+        lines.append("")
+        if quantitative_best_rmse is not None:
+            lines.append(f"Best strict Kothari RMSE: `{quantitative_best_rmse:.3e}`.")
+            lines.append("Observed strict-mode errors remain moderate rather than negligible, so this section supports only a cautious quantitative comparison.")
     lines.append("")
-    lines.append("### Table C. Kothari comparison against integer-order baseline and MLF baseline")
+    lines.append("## 4. Qualitatively Compared Literature Cases")
     lines.append("")
-    cols_c = [
-        c
-        for c in [
-            "scenario",
-            "source_refs",
-            "rmse",
-            "integer_rmse",
-            "mlf_rmse",
-            "N",
-            "runtime_seconds",
-            "residual_norm",
-            "condition_number",
-        ]
-        if c in kothari.columns
-    ]
-    lines.append(_markdown_table(kothari[cols_c]))
+    lines.append("These cases are retained as external references only. They may still report numerical distances, but those distances are not promoted to strict validation claims.")
     lines.append("")
-    lines.append("## 4. Initialization stress-test (Lopez)")
+    qualitative_rows = []
+    if not kothari_replay.empty:
+        for row in kothari_replay.itertuples(index=False):
+            qualitative_rows.append(
+                {
+                    "benchmark_id": row.benchmark_id,
+                    "mode": row.mode,
+                    "model_match_level": row.model_match_level,
+                    "data_source": row.data_source,
+                    "initialization_type": row.initialization_type,
+                    "claim_level": row.claim_level,
+                    "rmse": row.rmse,
+                    "note": row.comparison_note,
+                }
+            )
+    for note in [gomez_note, wang_note]:
+        qualitative_rows.append(
+            {
+                "benchmark_id": note["benchmark_id"],
+                "mode": "external_reference",
+                "model_match_level": note["model_match_level"],
+                "data_source": note["data_source"],
+                "initialization_type": note["initialization_type"],
+                "claim_level": note["claim_level"],
+                "rmse": None,
+                "note": note["message"],
+            }
+        )
+    lines.append(_markdown_table(pd.DataFrame(qualitative_rows)))
     lines.append("")
-    lines.append("Paper/file source: `additional_inf/energies-15-00792-v2.pdf`.")
-    lines.append("Direct mapping to the current solver is unsupported because the solver uses pointwise initialization only.")
+    if replay_best_rmse is not None:
+        lines.append(f"Best replay-only Kothari RMSE: `{replay_best_rmse:.3e}`. This number is descriptive only and should not be read as validation accuracy.")
+        lines.append("")
+    lines.append("Published Wang metrics are preserved below as external context, not as a scorecard for the present solver.")
     lines.append("")
-    lines.append("### Table D. Lopez initialization notes")
+    lines.append(_markdown_table(wang_table))
+    lines.append("")
+    lines.append("## 5. Limitations")
     lines.append("")
     lines.append(_markdown_table(pd.DataFrame([lopez_note])))
     lines.append("")
-    lines.append(f"Generated {len(lopez)} analytic samples for `g1`, `g2`, `g3`, and `g4`.")
+    lines.append("## 6. Reproducibility")
     lines.append("")
-    lines.append("## 5. Simple fractional RC sanity-check (Gomez)")
+    lines.append("- Single-command entrypoint: `python -m benchmarks`.")
+    lines.append("- Deterministic settings are stored in `benchmarks/configs/verification_suite.json`.")
+    lines.append("- Machine-readable artifacts are written to `benchmarks/results/` and paper-ready tables to `benchmarks/results/tables/`.")
+    lines.append("- Benchmark claims are separated into verification, quantitative literature comparison, qualitative external reference, and limitations.")
+    lines.append("- For constant-coefficient reductions the discrete matrix can collapse to the identity, so `condition_number = 1` and zero linear residual are expected but not the primary diagnostics.")
     lines.append("")
-    lines.append("Paper/file source: `additional_inf/ArticuloPublicado.PDF`.")
-    lines.append("Nearest compatible formulation: `tau_gamma D_t^gamma v + v = sin(omega t)`. This section is qualitative only.")
+    return "\n".join(lines)
+
+
+def build_paper_style_summary() -> str:
+    verification_exact = pd.read_csv(RESULTS_DIR / "verification_exact.csv")
+    verification_convergence = pd.read_csv(RESULTS_DIR / "verification_convergence.csv")
+    kothari_strict = pd.read_csv(RESULTS_DIR / "validation_kothari_strict.csv")
+    kothari_replay = pd.read_csv(RESULTS_DIR / "validation_kothari_replay.csv")
+
+    lines: list[str] = []
+    lines.append("# Paper-Style Validation Summary")
     lines.append("")
-    lines.append(f"Generated {len(gomez)} samples for gamma in `{{1, 0.98, 0.96}}`.")
+    lines.append("## Verified")
     lines.append("")
-    lines.append("## 6. Optional Wang external reference")
+    lines.append(
+        f"- The solver reproduces closed-form Mittag-Leffler test problems on a fixed grid, with best/worst absolute L2 errors of "
+        f"`{verification_exact['l2_abs'].min():.3e}` / `{verification_exact['l2_abs'].max():.3e}` over the reported sweep."
+    )
+    lines.append(
+        f"- The solver demonstrates convergence on manufactured solutions across smooth, weakly singular, and trial-space-aligned families; "
+        f"best/worst absolute L2 errors in that suite are `{verification_convergence['l2_abs'].min():.3e}` / `{verification_convergence['l2_abs'].max():.3e}`."
+    )
     lines.append("")
-    lines.append("Wang 2020 was not force-fit onto the one-term solver. Published ultra-capacitor targets are included only as external references.")
+    lines.append("## Quantitatively Compared")
     lines.append("")
-    lines.append("| temperature | published MAE | published MRE | published RMSE |")
-    lines.append("|---|---:|---:|---:|")
-    lines.append("| 0 C | 26.4 mV | 1.45% | 32.8 mV |")
-    lines.append("| 25 C | 37.3 mV | 2.10% | 45.1 mV |")
-    lines.append("| 45 C | 28.2 mV | 1.52% | 35.4 mV |")
+    if kothari_strict.empty:
+        lines.append("- No external literature case currently supports a strict quantitative validation claim.")
+    else:
+        lines.append(
+            "- A limited Kothari subset with published zero-initial conditions is compared quantitatively under model-reduction and PDF-digitization assumptions only, with moderate RMSE rather than strong one-to-one agreement."
+        )
     lines.append("")
-    lines.append("## 7. Conclusions")
+    lines.append("## Qualitatively Compared")
     lines.append("")
-    lines.append("- Exact comparisons are strict and reproducible.")
-    lines.append("- Kothari scenarios use published table parameters first; no parameter identification was added in this first pass.")
-    lines.append("- Lopez is handled as a limitation study, not a fake solver capability claim.")
-    lines.append("- Gomez is qualitative and checks that the trend with decreasing gamma is recovered.")
+    lines.append(
+        f"- Kothari replay scenarios with inferred initial state or inferred switching remain descriptive only ({len(kothari_replay)} replay rows)."
+    )
+    lines.append("- Gomez and Wang are retained as external structural references and do not support strict quantitative validation claims.")
     lines.append("")
-    lines.append("## 8. Limitations / unsupported comparisons")
+    lines.append("## Not Supported / Limitations")
     lines.append("")
-    lines.append("- `Kajal.pdf` has no text layer, so table values were transcribed manually into machine-readable JSON.")
-    lines.append("- Kothari metrics are versus digitized figure curves from PDF pages when raw data are unavailable.")
-    lines.append("- Some Kothari initial voltages and switching times are inferred from figure geometry, so those scenarios are marked approximate.")
-    lines.append("- Wang 2020 was kept as a target metric box only because its model structure is richer than the present solver.")
-    lines.append("")
+    lines.append("- History-dependent initialization is not implemented; the current solver supports pointwise initial condition only.")
+    lines.append("- Lopez is therefore a limitation study, not an accuracy benchmark.")
+    lines.append("- Benchmarks based only on digitized curves remain approximate and should not be described as raw experimental validation.")
     return "\n".join(lines)
 
 
 def write_report_files() -> dict[str, str]:
     markdown = build_report_markdown()
-    md_path = REPORT_DIR / "benchmark_report.md"
-    html_path = REPORT_DIR / "benchmark_report.html"
+    paper_summary = build_paper_style_summary()
+    md_path = REPORT_DIR / "validation_report.md"
+    html_path = REPORT_DIR / "validation_report.html"
+    paper_summary_path = REPORT_DIR / "paper_validation_summary.md"
     md_path.write_text(markdown, encoding="utf-8")
+    paper_summary_path.write_text(paper_summary, encoding="utf-8")
     try:
         import markdown as md
 
@@ -149,4 +219,8 @@ def write_report_files() -> dict[str, str]:
         escaped = markdown.replace("&", "&amp;").replace("<", "&lt;").replace(">", "&gt;")
         html = f"<html><body><pre>{escaped}</pre></body></html>"
     html_path.write_text(html, encoding="utf-8")
-    return {"markdown": str(md_path), "html": str(html_path)}
+    return {
+        "markdown": str(md_path),
+        "html": str(html_path),
+        "paper_summary": str(paper_summary_path),
+    }

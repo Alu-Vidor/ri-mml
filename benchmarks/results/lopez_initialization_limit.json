@@ -1,0 +1,19 @@
+{
+  "benchmark_id": "lopez_initialization_limit",
+  "validation_category": "limitations",
+  "source_paper": "Lopez-Villanueva et al. 2022 history-dependent initialization study",
+  "model_match_level": "surrogate",
+  "data_source": "manual_table_transcription",
+  "initialization_type": "history-dependent",
+  "claim_level": "limitation_only",
+  "message": "Current RI-MML solver supports only a pointwise initial condition u(0)=u0. It does not implement history-dependent initialization, so Lopez is included only to document a boundary of applicability.",
+  "not_supported": [
+    "history-dependent initialized operators",
+    "prehistory-dependent CPE state reconstruction",
+    "one-to-one replay of Lopez decay curves with the present solver"
+  ],
+  "supported_surrogate_only": [
+    "analytic decay families g1/g2/g3 as external references",
+    "multi-exponential surrogate g4 comparison"
+  ]
+}

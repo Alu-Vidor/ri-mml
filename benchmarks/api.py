@@ -42,6 +42,8 @@ class SolutionObject:
     u: Array
     runtime_seconds: float
     residual_norm: float
+    relative_residual_norm: float
+    rhs_norm: float
     condition_number: float
     modes: int
     system_matrix: Array
@@ -81,11 +83,15 @@ def solve_fractional_ivp(
     t = np.linspace(0.0, problem_config.interval_end, problem_config.evaluation_points)
     u = np.asarray(spectral_solution.evaluate(t), dtype=float)
     residual = spectral_solution.system_matrix @ spectral_solution.density_coefficients - spectral_solution.rhs
+    rhs_norm = float(np.linalg.norm(spectral_solution.rhs))
+    residual_norm = float(np.linalg.norm(residual))
     return SolutionObject(
         t=t,
         u=u,
         runtime_seconds=runtime_seconds,
-        residual_norm=float(np.linalg.norm(residual)),
+        residual_norm=residual_norm,
+        relative_residual_norm=residual_norm / max(rhs_norm, 1e-30),
+        rhs_norm=rhs_norm,
         condition_number=float(np.linalg.cond(spectral_solution.system_matrix)),
         modes=solver_config.basis_size,
         system_matrix=spectral_solution.system_matrix,
@@ -98,4 +104,3 @@ def solve_fractional_ivp(
         },
         raw_solution=spectral_solution,
     )
-
