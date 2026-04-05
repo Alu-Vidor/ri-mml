@@ -1,0 +1,79 @@
+{
+  "article": "M. Caputo, F. Mainardi, 'A New Dissipation Model Based on Memory Mechanism', Pure and Applied Geophysics, 1971.",
+  "material": "Silver",
+  "table_1_parameters": {
+    "delta": 0.55,
+    "alpha": 39.3,
+    "nu": 0.5,
+    "beta": 39.849999999999994,
+    "epsilon": 0.025094102885821836
+  },
+  "cases": [
+    {
+      "case_id": "T10",
+      "T": 10.0,
+      "material": "Silver",
+      "nu": 0.5,
+      "beta": 39.849999999999994,
+      "epsilon": 0.025094102885821836,
+      "spectral_basis_sizes": [
+        4,
+        6,
+        8,
+        10,
+        12,
+        16,
+        20,
+        24,
+        32
+      ],
+      "l1_grid_sizes": [
+        200,
+        500,
+        1000,
+        2000,
+        5000,
+        10000,
+        20000,
+        50000,
+        100000
+      ],
+      "best_spectral_err_inf": 2.3314683517128287e-15,
+      "best_l1_err_inf": 0.1276307396265718,
+      "report_markdown": "C:\\Users\\danii\\Desktop\\Diss\\ri-mml\\benchmarks\\report\\caputo_mainardi_T10_report.md"
+    },
+    {
+      "case_id": "T1",
+      "T": 1.0,
+      "material": "Silver",
+      "nu": 0.5,
+      "beta": 39.849999999999994,
+      "epsilon": 0.025094102885821836,
+      "spectral_basis_sizes": [
+        4,
+        6,
+        8,
+        10,
+        12,
+        16,
+        20,
+        24,
+        32
+      ],
+      "l1_grid_sizes": [
+        200,
+        500,
+        1000,
+        2000,
+        5000,
+        10000,
+        20000,
+        50000,
+        100000
+      ],
+      "best_spectral_err_inf": 2.7755575615628914e-15,
+      "best_l1_err_inf": 0.0438524659548335,
+      "report_markdown": "C:\\Users\\danii\\Desktop\\Diss\\ri-mml\\benchmarks\\report\\caputo_mainardi_T1_report.md"
+    }
+  ]
+}

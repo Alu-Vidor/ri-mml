@@ -2,6 +2,7 @@ from __future__ import annotations
 
 import numpy as np
 
+from .caputo_mainardi_silver import run_caputo_mainardi_silver_benchmark
 from .gomez import run_gomez_qualitative_reference
 from .kothari import run_kothari_benchmarks
 from .lopez import run_lopez_initialization_limit
@@ -16,6 +17,7 @@ def main() -> None:
     ensure_directories()
 
     verification_summary = run_verification_suite()
+    caputo_mainardi_summary = run_caputo_mainardi_silver_benchmark()
     kothari_summary = run_kothari_benchmarks()
     lopez_summary = run_lopez_initialization_limit()
     gomez_summary = run_gomez_qualitative_reference()
@@ -27,6 +29,9 @@ def main() -> None:
         "deterministic_seed": 0,
         "solver_initialization_support": "pointwise_only",
         "verified": verification_summary,
+        "real_material_benchmarks": {
+            "caputo_mainardi_silver": caputo_mainardi_summary,
+        },
         "validation_literature_quantitative": {
             "kothari_strict": kothari_summary["strict_rows"],
         },
